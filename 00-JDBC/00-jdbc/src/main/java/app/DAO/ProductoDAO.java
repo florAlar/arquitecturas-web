@@ -1,4 +1,7 @@
 package app.DAO;
 
-public class ProductoDAO {
+import java.sql.Connection;
+
+public interface ProductoDAO {
+
 }

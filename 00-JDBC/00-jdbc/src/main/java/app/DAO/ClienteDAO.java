@@ -1,4 +1,7 @@
 package app.DAO;
 
-public class ClienteDAO {
+import java.sql.Connection;
+
+public interface ClienteDAO {
+
 }
