@@ -1,4 +1,0 @@
-INDEX VERSION 1.134+/home/agus/Escritorio/tp-arq/arquitecturas-web/.metadata/.plugins/org.eclipse.jdt.core
-3014197134.index
-1865797976.index
-722726688.index
