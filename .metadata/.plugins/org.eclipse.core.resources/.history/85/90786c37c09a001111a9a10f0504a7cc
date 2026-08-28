@@ -1,0 +1,29 @@
+package com.tp1.services;
+
+import java.util.List;
+
+import com.tp1.dao.interfaces.ClienteDAO;
+import com.tp1.dto.ClienteDTO;
+
+public class ClienteService {
+	
+	private ClienteDAO dao;
+	
+	public ClienteService(ClienteDAO dao) {
+		this.dao = dao;
+	}
+	
+	
+	public void inserCliente(int id, String nombre,String email) {
+		//hacer cositas...
+	}
+	
+	public List<ClienteDTO> getClientes(){
+		//hacer cositas...
+	}
+	
+	public ClienteDTO getCliente(int id) {
+		//hacer cositas...
+	}
+	
+}

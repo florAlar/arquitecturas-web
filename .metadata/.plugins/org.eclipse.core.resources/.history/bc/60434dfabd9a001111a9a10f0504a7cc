@@ -1,0 +1,12 @@
+package com.tp1.dao.interfaces;
+
+import java.util.List;
+
+import com.tp1.entities.Producto;
+
+public interface ProductoDAO {
+	void insertProducto(int id,String nombre, int valor);
+	List<Producto> getProductos();
+	Producto getProducto(int id);
+	Producto getProductoMasVendido()
+}

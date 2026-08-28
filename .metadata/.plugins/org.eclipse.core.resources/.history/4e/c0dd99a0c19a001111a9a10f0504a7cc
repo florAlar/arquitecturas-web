@@ -1,0 +1,21 @@
+package com.tp1.services;
+
+import com.tp1.dao.interfaces.FacturaDAO;
+import com.tp1.dto.FacturaDTO;
+
+public class FacturaService {
+
+	private FacturaDAO dao;
+	
+	public FacturaService(FacturaDAO dao) {
+		this.dao = dao;
+	}
+	
+	public void insertFactura(int id) {
+		//hacer cositas...
+	}
+	
+	public FacturaDTO getFactura(int id) {
+		//hacer cositas...
+	}
+}

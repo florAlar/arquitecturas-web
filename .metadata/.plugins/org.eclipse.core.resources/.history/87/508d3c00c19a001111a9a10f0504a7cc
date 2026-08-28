@@ -1,0 +1,13 @@
+package com.tp1.services;
+
+import com.tp1.entities.FacturaProducto;
+
+public class FacturaProductoService {
+
+	private FacturaProductoDAO dao;
+	
+	public FacturaProductoService(FacturaProducto dao) {
+		this.dao = dao;
+	}
+	
+}
