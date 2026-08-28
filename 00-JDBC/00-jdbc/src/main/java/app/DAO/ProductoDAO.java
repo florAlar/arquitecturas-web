@@ -6,8 +6,8 @@ import app.entidades.Producto;
 
 public interface ProductoDAO {
 
-    void inserProducto(Producto producto);
+    void insertProducto(Producto producto);
     ProductoDTO getProdMasRecaudado();
-    Producto findById(int id);
+    ProductoDTO findById(int id);
 
 }
