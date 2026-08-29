@@ -1,4 +1,5 @@
 package app.DAO;
+import java.sql.Connection;
 import app.Entidades.Factura;
 import java.util.List;
 
@@ -13,3 +14,4 @@ public interface FacturaDAO {
 
 
 }
+
