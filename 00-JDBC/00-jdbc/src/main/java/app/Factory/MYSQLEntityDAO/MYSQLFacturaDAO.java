@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class MYSQLFacturaDAO implements FacturaDAO {
-    private  final Connection connection;
+    private final Connection connection;
 
     public MYSQLFacturaDAO(Connection connection){
         this.connection = connection;
@@ -118,6 +118,19 @@ public class MYSQLFacturaDAO implements FacturaDAO {
         } catch (SQLException e) {
             System.err.println("error al borrar la factura: "+e.getMessage());
 
+        }
+    }
+
+    @Override
+    public void createFactura(Long idFactura, Long idCliente) {
+        String sql = "INSERT INTO Factura (idFactura, idCliente) VALUES (?, ?)";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setLong(1, idFactura);
+            ps.setLong(2, idCliente);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("error al insertar la factura: "+e.getMessage());
         }
     }
 }
