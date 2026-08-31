@@ -1,0 +1,19 @@
+services:
+  mysql:
+    image: mysql:8.4
+
+    container_name: mysql-integrador1
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: integrador1
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

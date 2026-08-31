@@ -1,4 +1,7 @@
 package app.DAO;
 
-public class FacturaProductoDAO {
+import java.sql.Connection;
+
+public interface FacturaProductoDAO {
+
 }
