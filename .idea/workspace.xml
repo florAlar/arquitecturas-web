@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="256b6a4a-8403-475f-94d1-769f9edb2098" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/00-JDBC/00-jdbc/src/main/java/app/DAO/ProductoDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/00-JDBC/00-jdbc/src/main/java/app/DAO/ProductoDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/00-JDBC/00-jdbc/src/main/java/app/DAO/FacturaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/00-JDBC/00-jdbc/src/main/java/app/DAO/FacturaDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/00-JDBC/00-jdbc/src/main/java/app/Factory/MYSQLEntityDAO/MYSQLFacturaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/00-JDBC/00-jdbc/src/main/java/app/Factory/MYSQLEntityDAO/MYSQLFacturaDAO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,17 +33,22 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "productoDAO-Interfaz",
+    "git-widget-placeholder": "4-crear-entidad-e-interfaz-factura",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/home/agus/Escritorio/tp-arq/arquitecturas-web",
-    "nodejs_package_manager_path": "npm"
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-30f59d01ecdd-34e2839f716b-intellij.indexing.shared.core-IU-262.9437.185" />
-        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.9437.185" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.23774.435" />
+        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-IU-251.23774.435" />
       </set>
     </attachedChunks>
   </component>
@@ -49,6 +59,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1787625000311</updated>
+      <workItem from="1788185357219" duration="7957000" />
     </task>
     <servers />
   </component>
