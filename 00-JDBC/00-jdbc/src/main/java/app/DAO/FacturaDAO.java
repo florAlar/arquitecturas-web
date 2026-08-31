@@ -10,6 +10,7 @@ public interface FacturaDAO {
     void insertFactura(Factura factura);
     void updateFactura(Factura factura);
     void deleteFactura(Long idFactura);
+    void createFactura(Long idFactura, Long idCliente);
 
 
 
