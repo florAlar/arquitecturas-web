@@ -1,5 +1,15 @@
 package app.Entidades;
 
-public class Cliente {
+import lombok.*;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+
+public class Cliente {
+    private Long idCliente;
+    private String nombre;
+    private String email;
 }
