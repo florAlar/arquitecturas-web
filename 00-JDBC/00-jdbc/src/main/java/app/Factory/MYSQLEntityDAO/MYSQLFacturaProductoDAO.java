@@ -28,7 +28,7 @@ public class MYSQLFacturaProductoDAO implements FacturaProductoDAO {
                 resultado.getInt("cantidad")
         );
         return facturaProducto;
-    } //map
+    } // map
 
 
 

@@ -10,9 +10,9 @@ public interface FacturaProductoDAO {
     List<FacturaProducto> getByIdFactura(int idFactura);
     List<FacturaProducto> getByIdProducto(int idProducto);
     List<FacturaProducto> getAll();
-    boolean create(FacturaProducto facturaProducto); //true si pudo crearlo, false si no
-    boolean update(FacturaProducto facturaProducto); //true si pudo actualizarlo
-    boolean delete(int idFactura, int idProducto);   //true si pudo borrarlo
-    boolean deleteAll();                             //true si pudo borrarlo
+    boolean create(FacturaProducto facturaProducto); //true si pudo crearlo, false si no pudo
+    boolean update(FacturaProducto facturaProducto); //true si pudo actualizarlo, false si no
+    boolean delete(int idFactura, int idProducto);   //true si pudo borrarlo, false si no
+    boolean deleteAll();                             //true si pudo borrarlo, false si no
 } //FacturaProductoDAO
 
