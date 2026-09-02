@@ -1,13 +1,18 @@
 package app.DAO;
 
+import app.Entidades.FacturaProducto;
+
 import java.sql.Connection;
+import java.util.List;
 
 public interface FacturaProductoDAO {
     FacturaProducto getById(int idFactura, int idProducto);
     List<FacturaProducto> getByIdFactura(int idFactura);
     List<FacturaProducto> getByIdProducto(int idProducto);
     List<FacturaProducto> getAll();
-    void insert(FacturaProducto facturaProducto);
-    void update(FacturaProducto facturaProducto);
-    void delete(int idFactura, int idProducto);
-}
+    boolean create(FacturaProducto facturaProducto); //true si pudo crearlo, false si no
+    boolean update(FacturaProducto facturaProducto); //true si pudo actualizarlo
+    boolean delete(int idFactura, int idProducto);   //true si pudo borrarlo
+    boolean deleteAll();                             //true si pudo borrarlo
+} //FacturaProductoDAO
+
