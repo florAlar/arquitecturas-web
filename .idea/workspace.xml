@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="256b6a4a-8403-475f-94d1-769f9edb2098" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/00-JDBC/00-jdbc/src/main/java/app/DAO/ProductoDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/00-JDBC/00-jdbc/src/main/java/app/DAO/ProductoDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/00-JDBC/00-jdbc/src/main/java/app/DAO/FacturaProductoDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/00-JDBC/00-jdbc/src/main/java/app/DAO/FacturaProductoDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/00-JDBC/00-jdbc/src/main/java/app/Entidades/FacturaProducto.java" beforeDir="false" afterPath="$PROJECT_DIR$/00-JDBC/00-jdbc/src/main/java/app/Entidades/FacturaProducto.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -10,6 +12,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="INCOMING_COMMITS_CHECK_STRATEGY" value="FETCH" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectColorInfo">{
@@ -28,9 +31,10 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "productoDAO-Interfaz",
+    "git-widget-placeholder": "main",
+    "git.auto.fetch.suggestion.counter": "1",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/agus/Escritorio/tp-arq/arquitecturas-web",
+    "last_opened_file_path": "C:/Users/jd_v/Documents/AAADOCSJohn/Cursos/AAATUDAI/A3C2/Arq Web/Progs/Integrador1",
     "nodejs_package_manager_path": "npm"
   }
 }]]></component>
@@ -54,5 +58,22 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
