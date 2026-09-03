@@ -5,6 +5,7 @@ import app.Entidades.Cliente;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 public class MYSQLClienteDAO implements ClienteDAO {
 
@@ -31,4 +32,30 @@ public class MYSQLClienteDAO implements ClienteDAO {
     }
 
     //agregar metodos faltantes para conseguir los datos */
+
+    @Override
+    public Cliente findByIdCliente(Long idCliente) {
+        return null;
+    }
+
+    @Override
+    public List<Cliente> findAllClientes() {
+        return List.of();
+    }
+
+    @Override
+    public void create(Cliente c) {
+    }
+
+    @Override
+    public void update(Cliente c) {
+    }
+
+    @Override
+    public void delete(Long idCliente) {
+    }
+
+    @Override
+    public void deleteAll() {
+    }
 }
