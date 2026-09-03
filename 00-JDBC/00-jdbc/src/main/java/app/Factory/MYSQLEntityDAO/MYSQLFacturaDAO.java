@@ -81,7 +81,7 @@ public class MYSQLFacturaDAO implements FacturaDAO {
     }
 
     @Override
-    public void insertFactura(Factura factura) {
+    public void create(Factura factura) {
         String sql = "INSERT INTO Factura (idFactura, idCliente) VALUES (?, ?)";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -121,18 +121,5 @@ public class MYSQLFacturaDAO implements FacturaDAO {
         }
     }
 
-    @Override
-    public void createFactura(Long idFactura, Long idCliente) {
-        String sql = "INSERT INTO Factura (idFactura, idCliente) VALUES (?, ?)";
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setLong(1, idFactura);
-            ps.setLong(2, idCliente);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("error al insertar la factura: "+e.getMessage());
-        }
-    }
 }
-
 

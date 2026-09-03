@@ -4,8 +4,8 @@ import app.DAO.ClienteDAO;
 import app.DAO.FacturaDAO;
 import app.DAO.FacturaProductoDAO;
 import app.DAO.ProductoDAO;
-import app.Factory.DAOFactory;
 import app.Entidades.Cliente;
+import app.Entidades.Factura;
 import app.Entidades.FacturaProducto;
 import app.Entidades.Producto;
 
@@ -181,7 +181,7 @@ public class DBInitializer {
                 float valor =
                         Float.parseFloat(record.get("valor"));
 
-                dao.insertProducto(
+                dao.create(
                         new Producto(
                                 idProducto,
                                 nombre,
@@ -216,9 +216,11 @@ public class DBInitializer {
                 int idCliente =
                         Integer.parseInt(record.get("idCliente"));
 
-                dao.createFactura(
-                        (long) idFactura,
-                        (long) idCliente
+                dao.create(
+                        new Factura(
+                                (long) idFactura,
+                                (long) idCliente
+                        )
                 );
             }
         }
@@ -258,4 +260,3 @@ public class DBInitializer {
         }
     }
 }
-
