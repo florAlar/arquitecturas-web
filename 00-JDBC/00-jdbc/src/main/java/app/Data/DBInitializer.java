@@ -250,13 +250,10 @@ public class DBInitializer {
                 int cantidad =
                         Integer.parseInt(record.get("cantidad"));
 
-                dao.create(
-                        new FacturaProducto(
-                                idFactura,
-                                idProducto,
-                                cantidad
-                        )
-                );
+                boolean created = dao.create(new FacturaProducto(idFactura, idProducto, cantidad));
+                if (!created) {
+                    throw new SQLException("No se pudo insertar FacturaProducto idFactura=" + idFactura + ", idProducto=" + idProducto);
+                }
             }
         }
     }
