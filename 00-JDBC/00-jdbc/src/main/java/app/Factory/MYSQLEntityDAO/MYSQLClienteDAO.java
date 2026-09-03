@@ -35,12 +35,12 @@ public class MYSQLClienteDAO implements ClienteDAO {
 
     @Override
     public Cliente findByIdCliente(Long idCliente) {
-        return null;
+        throw new UnsupportedOperationException("findByIdCliente no implementado");
     }
 
     @Override
     public List<Cliente> findAllClientes() {
-        return List.of();
+        throw new UnsupportedOperationException("findAllClientes no implementado");
     }
 
     @Override
