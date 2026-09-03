@@ -32,6 +32,7 @@ public class MYSQLProductoDAO implements ProductoDAO {
 
     @Override
     public void insertProducto(Producto producto) {
+        throw new UnsupportedOperationException("insertProducto no implementado");
     }
 
     @Override
