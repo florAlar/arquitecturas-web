@@ -5,6 +5,9 @@ import app.DAO.FacturaDAO;
 import app.DAO.FacturaProductoDAO;
 import app.DAO.ProductoDAO;
 import app.Factory.DAOFactory;
+import app.Entidades.Cliente;
+import app.Entidades.FacturaProducto;
+import app.Entidades.Producto;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -105,11 +108,6 @@ public class DBInitializer {
             String pathFacturaProducto)
             throws SQLException, IOException {
 
-        ClienteDAO clienteDAO = clienteDAO;
-        FacturaDAO facturaDAO = facturaDAO();
-        ProductoDAO productoDAO = productoDAO();
-        FacturaProductoDAO facturaProductoDAO = facturaProductoDAO();
-
         // El orden es importante por las claves foráneas.
         loadClientes(clienteDAO, pathCliente);
         loadProductos(productoDAO, pathProducto);
@@ -146,10 +144,12 @@ public class DBInitializer {
                 String email =
                         record.get("Email");
 
-                dao.insert(
-                        idCliente,
-                        nombre,
-                        email
+                dao.create(
+                        new Cliente(
+                                (long) idCliente,
+                                nombre,
+                                email
+                        )
                 );
             }
         }
@@ -181,10 +181,13 @@ public class DBInitializer {
                 float valor =
                         Float.parseFloat(record.get("valor"));
 
-                dao.insert(
-                        idProducto,
-                        nombre,
-                        valor
+                dao.insertProducto(
+                        new Producto(
+                                idProducto,
+                                nombre,
+                                valor,
+                                0
+                        )
                 );
             }
         }
@@ -213,9 +216,9 @@ public class DBInitializer {
                 int idCliente =
                         Integer.parseInt(record.get("idCliente"));
 
-                dao.insert(
-                        idFactura,
-                        idCliente
+                dao.createFactura(
+                        (long) idFactura,
+                        (long) idCliente
                 );
             }
         }
@@ -247,14 +250,12 @@ public class DBInitializer {
                 int cantidad =
                         Integer.parseInt(record.get("cantidad"));
 
-                dao.insert(
-                        idFactura,
-                        idProducto,
-                        cantidad
-                );
+                boolean created = dao.create(new FacturaProducto(idFactura, idProducto, cantidad));
+                if (!created) {
+                    throw new SQLException("No se pudo insertar FacturaProducto idFactura=" + idFactura + ", idProducto=" + idProducto);
+                }
             }
         }
     }
 }
-
 

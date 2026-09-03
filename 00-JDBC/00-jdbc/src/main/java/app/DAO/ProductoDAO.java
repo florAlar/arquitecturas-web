@@ -1,7 +1,7 @@
 package app.DAO;
 
-import java.sql.Connection;
-import app.entidades.Producto;
+import app.DTO.ProductoDTO;
+import app.Entidades.Producto;
 
 
 public interface ProductoDAO {
