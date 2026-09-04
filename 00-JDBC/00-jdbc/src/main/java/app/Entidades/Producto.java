@@ -8,8 +8,7 @@ import lombok.*;
 @ToString
 
 public class Producto {
-    private int id;
-    private String nombre;
-    private Float precio;
-    private int stock;
+    private int idProducto;
+    private String Nombre;
+    private Float Precio;
 }
