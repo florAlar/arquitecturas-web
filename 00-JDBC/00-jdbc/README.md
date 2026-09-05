@@ -106,6 +106,22 @@ Encapsulan el SQL por entidad; `Main` solo usa los contratos.
 - **Factory:** `DAOFactory` cachea una instancia por `DBType` en un `HashMap` estático.
 - **Conexión:** `MySQLDAOFactory` reutiliza un `Connection` estático (`createConnection` / `closeConnection`).
 
+## Cómo correr
+
+Requisitos en la máquina de cada integrante: **JDK 17+**, **Maven 3.9+**, **MySQL** (local o `docker compose up -d`).
+
+Desde la carpeta del módulo `00-jdbc` (CMD, PowerShell o terminal del IDE — no hace falta `run.bat`):
+
+```bash
+docker compose up -d
+mvn -DskipTests compile
+mvn -DskipTests compile exec:java
+```
+
+En IntelliJ: abrir el `pom.xml` como proyecto Maven, esperar el import de dependencias, Run de `app.Main`.
+
+`run.bat` es solo un atajo Windows opcional (`compile` / `run` / `version`) si `mvn` ya está en el PATH.
+
 ## Recursos
 
 - `src/main/resources/CSV/` — `cliente.csv`, `producto.csv`, `factura.csv`, `factura-producto.csv`
