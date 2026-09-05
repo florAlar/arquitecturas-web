@@ -1,25 +1,25 @@
 package app.DTO;
 
 public class ProductoDTO {
+    private int idProducto;
     private String nombre;
-    private float valor;
     private float recaudacion;
 
     public ProductoDTO() {
     }
 
-    public ProductoDTO(String nombre, float valor, float recaudacion) {
+    public ProductoDTO(int idProducto, String nombre, float recaudacion) {
+        this.idProducto = idProducto;
         this.nombre = nombre;
-        this.valor = valor;
         this.recaudacion = recaudacion;
+    }
+
+    public int getIdProducto() {
+        return idProducto;
     }
 
     public String getNombre() {
         return nombre;
-    }
-
-    public float getValor() {
-        return valor;
     }
 
     public float getRecaudacion() {
@@ -29,8 +29,8 @@ public class ProductoDTO {
     @Override
     public String toString() {
         return "ProductoDTO{" +
-                "nombre='" + nombre + '\'' +
-                ", valor=" + valor +
+                "idProducto=" + idProducto +
+                ", nombre='" + nombre + '\'' +
                 ", recaudacion=" + recaudacion +
                 '}';
     }

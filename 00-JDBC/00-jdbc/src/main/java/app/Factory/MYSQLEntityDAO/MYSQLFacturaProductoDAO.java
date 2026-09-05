@@ -10,224 +10,167 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class MYSQLFacturaProductoDAO implements FacturaProductoDAO {
 
     private final Connection conexion;
 
-    public MYSQLFacturaProductoDAO(Connection connection){
+    public MYSQLFacturaProductoDAO(Connection connection) {
         this.conexion = connection;
-    } //constructor MYSQLFacturaProductoDAO
+    }
 
-
-
-    private FacturaProducto map(ResultSet resultado) throws SQLException { //del resultSet devuelve un FacturaProducto
-        FacturaProducto  facturaProducto = new FacturaProducto(
+    private FacturaProducto map(ResultSet resultado) throws SQLException {
+        return new FacturaProducto(
                 resultado.getInt("idFactura"),
                 resultado.getInt("idProducto"),
                 resultado.getInt("cantidad")
         );
-        return facturaProducto;
-    } // map
-
-
+    }
 
     @Override
-    public FacturaProducto getById(int idFactura, int idProducto){
-        final String sql = """
-                SELECT idFactura, idProducto, cantidad
-                    FROM FacturaProducto 
-                    WHERE idFactura = ? 
-                    AND idProducto = ?
-                """;
-        try (PreparedStatement sentencia = conexion.prepareStatement(sql);) {
+    public FacturaProducto getById(int idFactura, int idProducto) {
+        final String sql =
+                "SELECT idFactura, idProducto, cantidad " +
+                "FROM Factura_Producto " +
+                "WHERE idFactura = ? AND idProducto = ?";
+
+        try (PreparedStatement sentencia = conexion.prepareStatement(sql)) {
             sentencia.setInt(1, idFactura);
             sentencia.setInt(2, idProducto);
             try (ResultSet resultado = sentencia.executeQuery()) {
-                if (resultado.next())
+                if (resultado.next()) {
                     return map(resultado);
-                else
-                    return null;
-            } catch (RuntimeException e) {
-                System.err.println("Error buscando FacturaProducto por idFactura " + idFactura +
-                        " e idProducto " + idProducto + " al procesar ResultSet: " + e.getMessage());
+                }
+                return null;
             }
         } catch (SQLException e) {
-            System.err.println("Error buscando FacturaProducto por idFactura " + idFactura +
-                    " e idProducto " + idProducto + " : " + e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException(
+                    "Error buscando Factura_Producto idFactura=" + idFactura +
+                            " idProducto=" + idProducto, e);
         }
-        return null;
-    } //getById
-
-
+    }
 
     @Override
-    public List<FacturaProducto> getByIdFactura(int idFactura){
+    public List<FacturaProducto> getByIdFactura(int idFactura) {
         List<FacturaProducto> facturasProductos = new ArrayList<>();
-        final String sql = """
-                SELECT idFactura, idProducto, cantidad
-                    FROM FacturaProducto 
-                    WHERE idFactura = ? 
-                """;
-        try (PreparedStatement sentencia = conexion.prepareStatement(sql);) {
+        final String sql =
+                "SELECT idFactura, idProducto, cantidad " +
+                "FROM Factura_Producto WHERE idFactura = ?";
+
+        try (PreparedStatement sentencia = conexion.prepareStatement(sql)) {
             sentencia.setInt(1, idFactura);
             try (ResultSet resultado = sentencia.executeQuery()) {
                 while (resultado.next()) {
-                    FacturaProducto  facturaProducto = map(resultado);
-                    facturasProductos.add(facturaProducto);
+                    facturasProductos.add(map(resultado));
                 }
-            } catch (RuntimeException e) {
-                System.err.println("Error buscando FacturaProducto por idFactura " + idFactura +
-                        " al procesar ResultSet: " + e.getMessage());
             }
         } catch (SQLException e) {
-            System.err.println("Error buscando FacturaProducto por idFactura " + idFactura +
-                    " : " + e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException(
+                    "Error buscando Factura_Producto por idFactura=" + idFactura, e);
         }
         return facturasProductos;
-    } //getByIdFactura
-
-
+    }
 
     @Override
-    public List<FacturaProducto> getByIdProducto(int idProducto){
+    public List<FacturaProducto> getByIdProducto(int idProducto) {
         List<FacturaProducto> facturasProductos = new ArrayList<>();
-        final String sql = """
-                SELECT idFactura, idProducto, cantidad
-                    FROM FacturaProducto 
-                    WHERE idProducto = ? 
-                    ORDER BY idFactura
-                """;
-        try (PreparedStatement sentencia = conexion.prepareStatement(sql);) {
+        final String sql =
+                "SELECT idFactura, idProducto, cantidad " +
+                "FROM Factura_Producto WHERE idProducto = ? ORDER BY idFactura";
+
+        try (PreparedStatement sentencia = conexion.prepareStatement(sql)) {
             sentencia.setInt(1, idProducto);
             try (ResultSet resultado = sentencia.executeQuery()) {
                 while (resultado.next()) {
-                    FacturaProducto  facturaProducto = map(resultado);
-                    facturasProductos.add(facturaProducto);
+                    facturasProductos.add(map(resultado));
                 }
-            } catch (RuntimeException e) {
-                System.err.println("Error buscando FacturaProducto por idProducto " + idProducto +
-                        " al procesar ResultSet: " + e.getMessage());
             }
         } catch (SQLException e) {
-            System.err.println("Error buscando FacturaProducto por idProducto " + idProducto +
-                    " : " + e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException(
+                    "Error buscando Factura_Producto por idProducto=" + idProducto, e);
         }
         return facturasProductos;
-    } //getByIdProducto
-
-
+    }
 
     @Override
     public List<FacturaProducto> getAll() {
         List<FacturaProducto> facturasProductos = new ArrayList<>();
-        final String sql = """
-                SELECT idFactura, idProducto, cantidad
-                FROM FacturaProducto 
-                ORDER BY idFactura, idProducto
-                """;
-        try (   PreparedStatement sentencia = conexion.prepareStatement(sql);
-                ResultSet resultado = sentencia.executeQuery();
-        ) {
+        final String sql =
+                "SELECT idFactura, idProducto, cantidad " +
+                "FROM Factura_Producto ORDER BY idFactura, idProducto";
+
+        try (PreparedStatement sentencia = conexion.prepareStatement(sql);
+             ResultSet resultado = sentencia.executeQuery()) {
             while (resultado.next()) {
-                FacturaProducto  facturaProducto = map(resultado);
-                facturasProductos.add(facturaProducto);
+                facturasProductos.add(map(resultado));
             }
         } catch (SQLException e) {
-            System.err.println("Error al listar facturas-productos: ");
-            e.printStackTrace();
+            throw new RuntimeException("Error listando Factura_Producto", e);
         }
-
         return facturasProductos;
-    } //getAll
+    }
 
-
-
-    private void mapInto(FacturaProducto facturaProducto, PreparedStatement sentencia) throws SQLException {
+    private void mapInto(FacturaProducto facturaProducto, PreparedStatement sentencia)
+            throws SQLException {
         sentencia.setInt(1, facturaProducto.getIdFactura());
         sentencia.setInt(2, facturaProducto.getIdProducto());
         sentencia.setInt(3, facturaProducto.getCantidad());
-    } //mapInto
-
-
+    }
 
     @Override
     public boolean create(FacturaProducto facturaProducto) {
-        final String sql = """
-                INSERT INTO FacturaProducto(idFactura, idProducto, cantidad) 
-                VALUES (?, ?, ?)
-                """;
+        final String sql =
+                "INSERT INTO Factura_Producto (idFactura, idProducto, cantidad) VALUES (?, ?, ?)";
+
         try (PreparedStatement sentencia = conexion.prepareStatement(sql)) {
             mapInto(facturaProducto, sentencia);
-            int filas = sentencia.executeUpdate();
-            return filas>0; //éxito si se modificó alguna fila.
+            return sentencia.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Error al insertar FacturaProducto:");
-            e.printStackTrace();
+            throw new RuntimeException(
+                    "Error insertando Factura_Producto idFactura=" +
+                            facturaProducto.getIdFactura() +
+                            " idProducto=" + facturaProducto.getIdProducto(), e);
         }
-        return false;
-    } //create
-
-
+    }
 
     @Override
     public boolean update(FacturaProducto facturaProducto) {
-        final String sql = """
-                UPDATE FacturaProducto 
-                SET cantidad = ? 
-                WHERE idFactura = ? 
-                AND idProducto = ?
-                """;
-        try (PreparedStatement sentencia = conexion.prepareStatement(sql)){
+        final String sql =
+                "UPDATE Factura_Producto SET cantidad = ? " +
+                "WHERE idFactura = ? AND idProducto = ?";
+
+        try (PreparedStatement sentencia = conexion.prepareStatement(sql)) {
             sentencia.setInt(1, facturaProducto.getCantidad());
             sentencia.setInt(2, facturaProducto.getIdFactura());
             sentencia.setInt(3, facturaProducto.getIdProducto());
-            int filas = sentencia.executeUpdate();
-            return filas > 0; //exitosos si modificó alguna fila
-        } catch(SQLException e) {
-            System.err.println("Error actualizando Factura-Producto: " + e.getMessage());
-            e.printStackTrace();
+            return sentencia.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error actualizando Factura_Producto", e);
         }
-        return false;
-    } //update
-
-
+    }
 
     @Override
     public boolean delete(int idFactura, int idProducto) {
-        final String sql = "DELETE FROM FacturaProducto WHERE idFactura = ? AND idProducto = ?";
+        final String sql =
+                "DELETE FROM Factura_Producto WHERE idFactura = ? AND idProducto = ?";
 
         try (PreparedStatement sentencia = conexion.prepareStatement(sql)) {
             sentencia.setInt(1, idFactura);
             sentencia.setInt(2, idProducto);
-            int filas = sentencia.executeUpdate();
-            return filas>0; //si hay filas modificadas el borrado fue exitoso
+            return sentencia.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("error eliminando factura-producto: " + e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException("Error eliminando Factura_Producto", e);
         }
-        return false;
-    } //delete
-
-
+    }
 
     @Override
     public boolean deleteAll() {
-        final String sql = """
-                DELETE FROM FacturaProducto
-                """;
-        try (PreparedStatement sentencia = conexion.prepareStatement(sql)){
-            int filas = sentencia.executeUpdate();
-            return filas>0; //si hay filas modificadas el borrado fue exitoso
-        } catch(SQLException e){
-            System.err.println("Error eliminando Factura-Producto:" + e.getMessage());
-            e.printStackTrace();
+        final String sql = "DELETE FROM Factura_Producto";
+
+        try (PreparedStatement sentencia = conexion.prepareStatement(sql)) {
+            sentencia.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error eliminando todos los Factura_Producto", e);
         }
-        return false;
-    } //deleteAll
-
-} //class MYSQLFacturaProductoDAO
-
+    }
+}

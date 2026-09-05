@@ -6,9 +6,8 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-
 public class Producto {
     private int idProducto;
-    private String Nombre;
-    private Float Precio;
+    private String nombre;
+    private float valor;
 }

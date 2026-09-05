@@ -7,35 +7,34 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MYSQLFacturaDAO implements FacturaDAO {
     private final Connection connection;
 
-    public MYSQLFacturaDAO(Connection connection){
+    public MYSQLFacturaDAO(Connection connection) {
         this.connection = connection;
     }
 
     @Override
-    public Factura getFacturaById(Long idFactura){
+    public Factura getFacturaById(Long idFactura) {
         String sql = "SELECT idFactura, idCliente FROM Factura WHERE idFactura = ?";
-        Factura res_factura= null;
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setLong(1, idFactura);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    res_factura = new Factura(
+                    return new Factura(
                             rs.getLong("idFactura"),
                             rs.getLong("idCliente")
                     );
                 }
             }
         } catch (SQLException e) {
-            System.err.println("error consultando la factura con id "+idFactura+": "+e.getMessage());
+            throw new RuntimeException("Error consultando factura id=" + idFactura, e);
         }
-        return res_factura;
+        return null;
     }
 
     @Override
@@ -54,8 +53,7 @@ public class MYSQLFacturaDAO implements FacturaDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("error consultando las facturas con cliente "+idCliente+": "+e.getMessage());
-
+            throw new RuntimeException("Error consultando facturas del cliente id=" + idCliente, e);
         }
         return res_facturas;
     }
@@ -74,8 +72,7 @@ public class MYSQLFacturaDAO implements FacturaDAO {
                 ));
             }
         } catch (SQLException e) {
-            System.err.println("error al consultar las facturas: "+e.getMessage());
-
+            throw new RuntimeException("Error listando facturas", e);
         }
         return res_facturas;
     }
@@ -89,8 +86,7 @@ public class MYSQLFacturaDAO implements FacturaDAO {
             ps.setLong(2, factura.getIdCliente());
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("error al insertar la factura: "+e.getMessage());
-
+            throw new RuntimeException("Error insertando factura id=" + factura.getIdFactura(), e);
         }
     }
 
@@ -103,8 +99,7 @@ public class MYSQLFacturaDAO implements FacturaDAO {
             ps.setLong(2, factura.getIdFactura());
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("error al actualizar la factura: "+e.getMessage());
-
+            throw new RuntimeException("Error actualizando factura id=" + factura.getIdFactura(), e);
         }
     }
 
@@ -116,8 +111,7 @@ public class MYSQLFacturaDAO implements FacturaDAO {
             ps.setLong(1, idFactura);
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("error al borrar la factura: "+e.getMessage());
-
+            throw new RuntimeException("Error eliminando factura id=" + idFactura, e);
         }
     }
 
@@ -130,9 +124,19 @@ public class MYSQLFacturaDAO implements FacturaDAO {
             ps.setLong(2, idCliente);
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("error al insertar la factura: "+e.getMessage());
+            throw new RuntimeException(
+                    "Error insertando factura id=" + idFactura + " cliente=" + idCliente, e);
+        }
+    }
+
+    @Override
+    public void deleteAll() {
+        String sql = "DELETE FROM Factura";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error eliminando todas las facturas", e);
         }
     }
 }
-
-

@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 public class MYSQLProductoDAO implements ProductoDAO {
 
-    Connection conn;
+    private final Connection conn;
 
     public MYSQLProductoDAO(Connection conn) {
         this.conn = conn;
@@ -24,51 +24,48 @@ public class MYSQLProductoDAO implements ProductoDAO {
         try (PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setInt(1, producto.getIdProducto());
             statement.setString(2, producto.getNombre());
-            statement.setFloat(3, producto.getPrecio());
+            statement.setFloat(3, producto.getValor());
             statement.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error al realizar la operacion!");
-            e.printStackTrace();
+            throw new RuntimeException("Error insertando producto id=" + producto.getIdProducto(), e);
         }
     }
 
     @Override
     public ProductoDTO getProdMasRecaudado() {
-        String sql = "SELECT p.idProducto, p.nombre, SUM(fp.cantidad * p.valor) AS recaudacion " +
+        String sql =
+                "SELECT p.idProducto, p.nombre, SUM(fp.cantidad * p.valor) AS recaudacion " +
                 "FROM Factura_Producto fp " +
                 "JOIN Producto p ON fp.idProducto = p.idProducto " +
                 "GROUP BY p.idProducto, p.nombre " +
                 "ORDER BY recaudacion DESC LIMIT 1";
-        ProductoDTO p = null;
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    p = new ProductoDTO(
-                            rs.getInt("idProducto"),
-                            rs.getString("nombre"),
-                            rs.getFloat("recaudacion")
-                    );
-                }
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return new ProductoDTO(
+                        rs.getInt("idProducto"),
+                        rs.getString("nombre"),
+                        rs.getFloat("recaudacion")
+                );
             }
         } catch (SQLException e) {
-            System.err.println("Error al consultar!");
-            e.printStackTrace();
+            throw new RuntimeException("Error consultando producto mas recaudado", e);
         }
-
-        return p;
+        return null;
     }
 
     @Override
     public ProductoDTO findById(int id) {
         String sql = "SELECT idProducto, nombre, valor FROM Producto WHERE idProducto = ?";
-        ProductoDTO p = null;
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    p = new ProductoDTO(
+                    // Para findById usamos recaudacion=valor unitario solo como portador;
+                    // el reporte de recaudacion real es getProdMasRecaudado.
+                    return new ProductoDTO(
                             rs.getInt("idProducto"),
                             rs.getString("nombre"),
                             rs.getFloat("valor")
@@ -76,10 +73,19 @@ public class MYSQLProductoDAO implements ProductoDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error al consultar!");
-            e.printStackTrace();
+            throw new RuntimeException("Error buscando producto id=" + id, e);
         }
+        return null;
+    }
 
-        return p;
+    @Override
+    public void deleteAll() {
+        String sql = "DELETE FROM Producto";
+
+        try (PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error eliminando todos los productos", e);
+        }
     }
 }
