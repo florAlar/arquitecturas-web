@@ -117,20 +117,38 @@ Se utiliza **Singleton** para reutilizar instancias que deben ser compartidas de
 * **DAOFactory:** mantiene una única instancia de cada tipo de factory (`DBType`) mediante un `HashMap` estático, evitando crear factories repetidas.
 * **Conexión:** `MySQLDAOFactory` mantiene una conexión compartida mediante `createConnection()` y `closeConnection()`, centralizando su creación y cierre.
 
+## DBInitializer
+
+`DBInitializer` centraliza la creación del esquema, limpieza y carga de datos desde archivos CSV.
+
+La carga de datos utiliza los **DAO recibidos mediante la fábrica**, evitando depender directamente de una implementación concreta de DAO y permitiendo reutilizar esta lógica con otras implementaciones.
+
+**Posible upgrade:** desacoplar la creación del esquema de tablas SQL de `DBInitializer`, separando la lógica específica de MySQL de la lógica general de inicialización y carga de datos con patron strategy.
+
 
 ## Cómo correr
 
-Requisitos en la máquina de cada integrante: **JDK 17+**, **Maven 3.9+**, **MySQL** (local o `docker compose up -d`).
+Requisitos: **JDK 17+**, **Maven 3.9+** y **Docker**.
 
-Desde la carpeta del módulo `00-jdbc` (CMD, PowerShell o terminal del IDE):
+### Desde IntelliJ IDEA
+
+1. Abrir el `pom.xml` como proyecto Maven y esperar la carga de dependencias.
+2. Desde una terminal, ubicarse dentro de la carpeta del módulo `00-jdbc` y levantar el contenedor:
 
 ```bash
 docker compose up -d
-mvn -DskipTests compile
-mvn -DskipTests compile exec:java
 ```
 
-En IntelliJ: abrir el `pom.xml` como proyecto Maven, esperar el import de dependencias, Run de `app.Main`.
+3. Ejecutar la clase `app.Main` desde IntelliJ IDEA.
+
+### Desde consola
+
+Ubicarse dentro de la carpeta del módulo `00-jdbc` y ejecutar:
+
+```bash
+docker compose up -d
+mvn -DskipTests compile exec:java
+```
 
 
 ## Recursos
