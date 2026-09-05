@@ -96,23 +96,33 @@ classDiagram
 
 ## Patrones
 
+El proyecto utiliza los patrones **DAO, Factory y Singleton** para separar responsabilidades, reducir el acoplamiento y centralizar la gestión del acceso a la base de datos.
+
 ### DAO
-Interfaces en `app.DAO`; implementaciones JDBC en `app.Factory.MYSQLEntityDAO`.  
-Encapsulan el SQL por entidad; `Main` solo usa los contratos.
+
+El patrón **DAO (Data Access Object)** separa la lógica de acceso a datos del resto de la aplicación. Cada entidad cuenta con una interfaz en `app.DAO` que define las operaciones disponibles, mientras que las implementaciones JDBC se encuentran en `app.Factory.MYSQLEntityDAO`.
+
+De esta forma, las consultas SQL y la lógica de persistencia quedan encapsuladas en los DAO, mientras que el resto de la aplicación trabaja sobre sus interfaces sin depender directamente de la implementación de MySQL.
 
 ### Factory
-`DAOFactory` (abstracta) y `MySQLDAOFactory` (concreta).  
-`getDAOFactory(DBType, paths…)` devuelve la familia de DAOs MySQL sin acoplar al resto con las clases `MYSQL*`.
+
+El patrón **Factory** centraliza la creación de los DAO. `DAOFactory` define la estructura general y `MySQLDAOFactory` proporciona las implementaciones correspondientes a MySQL.
+
+Esto permite que el resto de la aplicación solicite los DAO sin tener que conocer ni instanciar directamente las clases `MYSQL*`, reduciendo el acoplamiento y facilitando la incorporación de otros motores de base de datos.
 
 ### Singleton
-- **Factory:** `DAOFactory` cachea una instancia por `DBType` en un `HashMap` estático.
-- **Conexión:** `MySQLDAOFactory` reutiliza un `Connection` estático (`createConnection` / `closeConnection`).
+
+Se utiliza **Singleton** para reutilizar instancias que deben ser compartidas dentro de la aplicación.
+
+* **DAOFactory:** mantiene una única instancia de cada tipo de factory (`DBType`) mediante un `HashMap` estático, evitando crear factories repetidas.
+* **Conexión:** `MySQLDAOFactory` mantiene una conexión compartida mediante `createConnection()` y `closeConnection()`, centralizando su creación y cierre.
+
 
 ## Cómo correr
 
 Requisitos en la máquina de cada integrante: **JDK 17+**, **Maven 3.9+**, **MySQL** (local o `docker compose up -d`).
 
-Desde la carpeta del módulo `00-jdbc` (CMD, PowerShell o terminal del IDE — no hace falta `run.bat`):
+Desde la carpeta del módulo `00-jdbc` (CMD, PowerShell o terminal del IDE):
 
 ```bash
 docker compose up -d
@@ -122,7 +132,6 @@ mvn -DskipTests compile exec:java
 
 En IntelliJ: abrir el `pom.xml` como proyecto Maven, esperar el import de dependencias, Run de `app.Main`.
 
-`run.bat` es solo un atajo Windows opcional (`compile` / `run` / `version`) si `mvn` ya está en el PATH.
 
 ## Recursos
 
