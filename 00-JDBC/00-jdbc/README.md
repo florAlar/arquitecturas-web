@@ -2,6 +2,8 @@
 
 Aplicación Java/JDBC que arma el esquema MySQL, carga datos desde CSV y resuelve las consultas de facturación del trabajo práctico integrador.
 
+[← Volver al índice del repositorio](../../README.md)
+
 ## Consignas
 
 1. Crear el esquema de la base con JDBC.
