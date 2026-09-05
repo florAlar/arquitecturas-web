@@ -1,1 +1,19 @@
+# IDE
 .idea/
+.idea/misc.xml
+.idea/workspace.xml
+*.iml
+*.iws
+*.ipr
+
+# Build
+**/target/
+00-JDBC/00-jdbc/target/
+*.class
+*.jar
+*.war
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

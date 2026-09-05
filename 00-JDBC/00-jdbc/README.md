@@ -24,7 +24,7 @@ Paquetes bajo `app`: `Main` · `Factory` · `Data` · `DAO` · `Factory.MYSQLEnt
 
 ```mermaid
 classDiagram
-    direction LR
+    direction TB
 
     class Main
 

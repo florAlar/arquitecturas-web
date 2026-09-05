@@ -2,37 +2,30 @@
 
 Repositorio de entregas de la materia **Arquitecturas Web** (TUDAI / UNICEN).
 
-Cada carpeta de primer nivel es un **trabajo práctico independiente**: código, dependencias, base de datos y documentación propias. No comparten runtime ni se ejecutan como una sola aplicación.
+Cada carpeta de primer nivel corresponde a un **trabajo práctico independiente**, con su propio código, dependencias, base de datos y documentación.
 
-| Módulo | Tema | Documentación                                                |
-|--------|------|--------------------------------------------------------------|
-| [00-JDBC](00-JDBC/00-jdbc/README.md) | JDBC, CSV, DAO, Factory | [Documentacion del Práctico JDBC](00-JDBC/00-jdbc/README.md) |
+| Módulo                      | Tema                     | Documentación                         |
+| --------------------------- |--------------------------|---------------------------------------|
+| [00-JDBC](00-JDBC/00-jdbc/) | CSV, JDBC, DAO y Factory | [Ver JDBC](00-JDBC/00-jdbc/README.md) |
 
 ---
 
 ## 00-JDBC — Integrador JDBC
 
-**Ubicación:** [`00-JDBC/00-jdbc/`](00-JDBC/00-jdbc/)  
-**Detalle completo:** 
+**Ubicación:** [`00-JDBC/00-jdbc/`](00-JDBC/00-jdbc/)
 
-### Consigna
-
-1. Crear el esquema de la base de datos mediante **JDBC**.
-2. Cargar los datos de los **CSV** con JDBC (lectura con Apache Commons CSV).
-3. Obtener el **producto que más recaudó** (recaudación = cantidad vendida × valor).
-4. Listar **clientes ordenados** por el monto total facturado a cada uno.
+Trabajo práctico **enfocado en el acceso y persistencia de datos mediante JDBC**, utilizando archivos **CSV** como fuente de datos.
 
 ### Cómo está resuelto
 
-Podes ver la solucion en [Acá](00-JDBC/00-jdbc/README.md) (arquitectura, diagrama de clases, patrones, Docker, cómo correr).
+La implementación utiliza los patrones **DAO** y **Factory** para separar el acceso a datos del resto de la aplicación y reducir el acoplamiento con el motor de base de datos. Actualmente, la implementación está realizada para **MySQL**.
 
-**Patrones:** Uso de patrón DAO · Abstract Factory · Singleton de factory por `DBType` y de `Connection`. 
-Solo se implementó MySQL
+También se utiliza **Singleton** para centralizar la gestión de las instancias de Factory y de la conexión.
 
-**Entrar al Trabajo JDBC →** [00-JDBC/00-jdbc/README.md](00-JDBC/00-jdbc/README.md)
+**Podés ver la solución [acá](00-JDBC/00-jdbc/README.md).**
 
 ---
 
 ## Próximos módulos
 
-A medida que se sumen trabajos (`01-…`, etc.), cada uno tendrá su carpeta, su README interno y una sección en este índice con consigna + enlace a la resolución.
+A medida que se sumen nuevos trabajos (`01-…`, etc.), cada uno tendrá su propia carpeta y documentación, y se incorporará a este índice.
