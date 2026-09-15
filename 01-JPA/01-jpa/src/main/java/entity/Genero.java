@@ -1,0 +1,5 @@
+package entity;
+
+public enum Genero {
+   FEMENINO,MASCULINO,NO_BINARIO,POLIGENERO,THERIAN,FARMEANDO_AURA
+}
