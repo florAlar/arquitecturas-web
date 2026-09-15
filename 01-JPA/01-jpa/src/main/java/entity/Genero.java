@@ -1,5 +1,6 @@
 package entity;
 
-public enum Genero {
-   FEMENINO,MASCULINO,NO_BINARIO,POLIGENERO,THERIAN,FARMEANDO_AURA
-}
+public enum Genero
+{
+   MASCULINO, FEMENINO, NO_BINARIO
+} //
