@@ -26,7 +26,7 @@ public class Estudiante {
     private String  ciudad;
 
     @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Matricula> matriculas = new ArrayList<>();
+    private List<Inscripcion> inscripciones = new ArrayList<>();
 
 
     public Estudiante() { }
@@ -45,9 +45,9 @@ public class Estudiante {
         return lu;
     }
 
-    public void agregarMatricula(Matricula matricula) {
-        matriculas.add(matricula);
-        matricula.setEstudiante(this);
+    public void agregarInscripcion(Inscripcion inscripcion) {
+        inscripcion.add(inscripcion);
+        inscripcion.setEstudiante(this);
     }
 
     public String getNombres() {
@@ -96,12 +96,12 @@ public class Estudiante {
         this.ciudad = ciudad;
     }
 
-    public List<Matricula> getMatriculas() {
-        return matriculas;
+    public List<Inscripcion> getInscripciones() {
+        return inscripciones;
     }
 
-    public void setMatriculas(List<Matricula> matriculas) {
-        this.matriculas = matriculas;
+    public void setInscripciones(List<Inscripcion> inscripciones) {
+        this.inscripciones = inscripciones;
     }
 
     @Override

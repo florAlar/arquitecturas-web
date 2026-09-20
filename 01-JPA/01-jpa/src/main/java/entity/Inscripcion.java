@@ -8,7 +8,7 @@ import javax.persistence.*;
         )
 )
 @Entity
-public class Matricula {
+public class Inscripcion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,10 +25,10 @@ public class Matricula {
     private boolean graduado; // Indica si se graduó o no
 
 
-    public Matricula() { }
+    public Inscripcion() { }
 
     //el constructor no incluye id, porque es generado automáticamente
-    public Matricula(Estudiante estudiante, Carrera carrera, int antiguedad, boolean graduado) {
+    public Inscripcion(Estudiante estudiante, Carrera carrera, int antiguedad, boolean graduado) {
         this.estudiante = estudiante;
         this.carrera = carrera;
         this.antiguedad = antiguedad;
@@ -73,7 +73,7 @@ public class Matricula {
 
     @Override
     public String toString() {
-        return "Matricula{" +
+        return "Inscripcion{" +
                 "id=" + id +
                 ", estudiante=" + estudiante +
                 ", carrera=" + carrera +

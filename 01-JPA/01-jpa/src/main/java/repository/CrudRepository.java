@@ -9,4 +9,5 @@ public interface CrudRepository<Entity> {
     void create(Entity entity);
     void update(Entity entity);
     void delete(Entity entity);
+
 }

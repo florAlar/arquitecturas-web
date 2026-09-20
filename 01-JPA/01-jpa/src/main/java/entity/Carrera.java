@@ -15,7 +15,7 @@ public class Carrera {
     private String nombre;
 
     @OneToMany(mappedBy = "carrera")
-    private List<Matricula> matriculas = new ArrayList<>();
+    private List<Inscripcion> inscripciones = new ArrayList<>();
 
     public Carrera() {  }
 
@@ -24,9 +24,9 @@ public class Carrera {
         this.nombre = nombre;
     }
 
-    public void agregarMatricula(Matricula matricula) {
-        matriculas.add(matricula);
-        matricula.setCarrera(this);
+    public void agregarInscripcion(Inscripcion inscripcion) {
+        inscripciones.add(inscripcion);
+        inscripcion.setCarrera(this);
     }
 
     public Long getId() { return id; }
@@ -39,9 +39,9 @@ public class Carrera {
         this.nombre = nombre;
     }
 
-    public List<Matricula> getMatriculas() { return matriculas;  }
+    public List<Inscripcion> getInscripciones() { return inscripciones;  }
 
-    public void setMatriculas(List<Matricula> matriculas) { this.matriculas = matriculas; }
+    public void setInscripciones(List<Inscripcion> Inscripciones) { this.inscripciones = inscripciones; }
 
     @Override
     public String toString() {
