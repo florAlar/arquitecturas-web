@@ -56,6 +56,13 @@ public class EstudianteRepositoryImpl implements EstudianteRepository {
 
     @Override
     public List<EstudianteDTO> getEstudiantesByCarreraAndCiudadResidencia(Long idCarrera, String ciudadResidencia) {
-        return List.of();
+        String jpql = "SELECT new dto.EstudianteDTO(e.lu, e.nombres, e.apellido, e.edad, e.genero, e.dni, e.ciudad) " +
+                "FROM Inscripcion i JOIN i.estudiante e " +
+                "WHERE i.carrera.id = :idCarrera " +
+                "  AND LOWER(e.ciudad) = LOWER(:ciudadResidencia)";
+        TypedQuery<EstudianteDTO> query = em.createQuery(jpql,EstudianteDTO.class);
+        query.setParameter("idCarrera", idCarrera);
+        query.setParameter("ciudadResidencia", ciudadResidencia);
+        return query.getResultList();
     }
 }
