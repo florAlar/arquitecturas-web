@@ -46,7 +46,7 @@ public class Estudiante {
     }
 
     public void agregarInscripcion(Inscripcion inscripcion) {
-        inscripcion.add(inscripcion);
+        inscripciones.add(inscripcion);
         inscripcion.setEstudiante(this);
     }
 
@@ -118,4 +118,3 @@ public class Estudiante {
                 '}';
     }
 }
-

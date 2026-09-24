@@ -8,7 +8,7 @@
 
         <class>entity.Carrera</class>
         <class>entity.Estudiante</class>
-        <class>entity.Matricula</class>
+        <class>entity.Inscripcion</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
