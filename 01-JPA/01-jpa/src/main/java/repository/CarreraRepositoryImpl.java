@@ -1,6 +1,9 @@
 package repository;
 
+import dto.CarreraDTO;
 import dto.CarreraDTOCantidad;
+import dto.EstudianteDTO;
+import dto.ReporteCarreraDTO;
 import entity.Carrera;
 
 import javax.persistence.EntityManager;
@@ -42,9 +45,29 @@ public class CarreraRepositoryImpl implements CarreraRepository {
         return query.getResultList();
     }
 
+    @Override
+    public CarreraDTO getCarreraByName(String name) {
+        TypedQuery<CarreraDTO> query = em.createQuery(
+                "SELECT new dto.CarreraDTO(c.id, c.nombres) "
+                        + "FROM Carrera c WHERE c.nombres = :name",
+                CarreraDTO.class
+        );
+        query.setParameter("name", name);
+        return query.getResultStream().findFirst().orElse(null);
+    }
 
-
-
+    @Override
+    public List<ReporteCarreraDTO> generarReporteCarreras() {
+        TypedQuery<ReporteCarreraDTO> query = em.createQuery(
+                "SELECT new dto.ReporteCarreraDTO(c.nombres, i.fechaIngreso, COUNT(i), "
+                        + "SUM(CASE WHEN i.graduado = 1 THEN 1 ELSE 0 END)) "
+                        + "FROM Inscripcion i JOIN i.carrera c "
+                        + "GROUP BY c.nombres, i.fechaIngreso "
+                        + "ORDER BY c.nombres, i.fechaIngreso",
+                ReporteCarreraDTO.class
+        );
+        return query.getResultList();
+    }
 
 
 }
