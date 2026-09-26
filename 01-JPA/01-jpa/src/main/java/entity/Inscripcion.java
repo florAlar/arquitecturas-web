@@ -21,18 +21,25 @@ public class Inscripcion {
     @JoinColumn(name = "carrera_id", nullable = false)
     private Carrera carrera;
 
-    private int antiguedad; // Antigüedad en la carrera
-    private boolean graduado; // Indica si se graduó o no
+
+
+    private int fechaIngreso;     // se debe ingresar el AÑO en el que el estudiante ingresó/ingresa
+    private int fechaEgreso;      // por defecto es 0
+    private int antiguedad;       // Antigüedad en la carrera
+    private int graduado;         // Indica si se graduó o no 0 = False, 1 = True
+
 
 
     public Inscripcion() { }
 
     //el constructor no incluye id, porque es generado automáticamente
-    public Inscripcion(Estudiante estudiante, Carrera carrera, int antiguedad, boolean graduado) {
-        this.estudiante = estudiante;
-        this.carrera = carrera;
-        this.antiguedad = antiguedad;
-        this.graduado = graduado;
+    public Inscripcion(Estudiante estudiante, Carrera carrera, int antiguedad, int graduado,int fechaIngreso, int fechaEgreso) {
+        this.estudiante     = estudiante;
+        this.carrera        = carrera;
+        this.antiguedad     = antiguedad;
+        this.graduado       = graduado;
+        this.fechaIngreso   = fechaIngreso;
+        this.fechaEgreso    = fechaEgreso;
     }
 
     public Long getId() {
@@ -63,13 +70,27 @@ public class Inscripcion {
         this.antiguedad = antiguedad;
     }
 
-    public boolean isGraduado() {
+    public int isGraduado() {
         return graduado;
     }
 
-    public void setGraduado(boolean graduado) {
+    public void setGraduado(int graduado) {
         this.graduado = graduado;
     }
+
+    public void SetFechaIngreso(int fechaIngreso) { this.fechaIngreso = fechaIngreso;}
+
+    public int getFechaIngreso() {
+        return fechaIngreso;
+    }
+    public int getFechaEgreso() {
+        return fechaEgreso;
+    }
+
+    public void setFechaEgreso(int fechaEgreso) {
+        this.fechaEgreso = fechaEgreso;
+    }
+
 
     @Override
     public String toString() {
