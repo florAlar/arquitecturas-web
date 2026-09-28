@@ -21,6 +21,7 @@ public class Inscripcion {
     @JoinColumn(name = "carrera_id", nullable = false)
     private Carrera carrera;
 
+    /** Año de ingreso/inscripción (CSV: columna inscripcion). */
     @Column(name = "anio_inscripcion", nullable = false)
     private int anioInscripcion;
 

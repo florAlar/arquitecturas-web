@@ -1,5 +1,6 @@
 package repository;
 
+import dto.CarreraDTO;
 import dto.CarreraDTOCantidad;
 import dto.ReporteCarreraDTO;
 import entity.Carrera;
@@ -7,7 +8,6 @@ import entity.Carrera;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
-import java.util.Collections;
 import java.util.List;
 
 public class CarreraRepositoryImpl implements CarreraRepository {
@@ -45,10 +45,11 @@ public class CarreraRepositoryImpl implements CarreraRepository {
     }
 
     @Override
-    public Carrera getCarreraByName(String name) {
-        TypedQuery<Carrera> query = em.createQuery(
-                "SELECT c FROM Carrera c WHERE LOWER(c.nombre) = LOWER(:name)",
-                Carrera.class
+    public CarreraDTO getCarreraByName(String name) {
+        TypedQuery<CarreraDTO> query = em.createQuery(
+                "SELECT new dto.CarreraDTO(c.id, c.nombre) "
+                        + "FROM Carrera c WHERE LOWER(c.nombre) = LOWER(:name)",
+                CarreraDTO.class
         );
         query.setParameter("name", name);
         return query.getResultStream().findFirst().orElse(null);
@@ -56,7 +57,14 @@ public class CarreraRepositoryImpl implements CarreraRepository {
 
     @Override
     public List<ReporteCarreraDTO> generarReporteCarreras() {
-        // Punto 3 del enunciado — se implementa en JPQL cuando se complete el TP
-        return Collections.emptyList();
+        TypedQuery<ReporteCarreraDTO> query = em.createQuery(
+                "SELECT new dto.ReporteCarreraDTO(c.nombre, i.anioInscripcion, COUNT(i), "
+                        + "SUM(CASE WHEN i.graduado = true THEN 1L ELSE 0L END)) "
+                        + "FROM Inscripcion i JOIN i.carrera c "
+                        + "GROUP BY c.nombre, i.anioInscripcion "
+                        + "ORDER BY c.nombre, i.anioInscripcion",
+                ReporteCarreraDTO.class
+        );
+        return query.getResultList();
     }
 }

@@ -1,5 +1,6 @@
 package repository;
 
+import dto.CarreraDTO;
 import dto.CarreraDTOCantidad;
 import dto.ReporteCarreraDTO;
 import entity.Carrera;
@@ -12,7 +13,7 @@ public interface CarreraRepository {
 
     List<CarreraDTOCantidad> getCarrerasConInscriptosOrdenadas();
 
-    Carrera getCarreraByName(String name);
+    CarreraDTO getCarreraByName(String name);
 
     List<ReporteCarreraDTO> generarReporteCarreras();
 }

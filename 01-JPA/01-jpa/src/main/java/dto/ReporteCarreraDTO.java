@@ -2,7 +2,6 @@ package dto;
 
 /**
  * Fila del reporte de carreras (punto 3): por carrera y año, inscriptos y egresados.
- * Se completa cuando se implemente generarReporteCarreras en el repository.
  */
 public class ReporteCarreraDTO {
     private final String nombreCarrera;
