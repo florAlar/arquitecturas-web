@@ -1,6 +1,13 @@
 package factory;
 
-public class FactoryEntityManager {
+import repository.CarreraRepositoryImpl;
+import repository.EstudianteRepositoryImpl;
+import repository.InscripcionRepositoryImpl;
+
+import javax.persistence.EntityManager;
+import java.sql.SQLException;
+
+public abstract class FactoryEntityManager {
 
     public static final int MYSQL = 1;
 

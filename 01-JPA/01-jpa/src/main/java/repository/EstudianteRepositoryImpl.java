@@ -7,11 +7,17 @@ import entity.Genero;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EstudianteRepositoryImpl implements EstudianteRepository {
 
     private final EntityManager em;
+
+    private final ArrayList<String> campos = new ArrayList<>(
+            Arrays.asList("nombre", "apellido", "dni", "edad", "genero", "ciudad"));
+
 
     public EstudianteRepositoryImpl(EntityManager em) {
         this.em = em;
@@ -34,13 +40,34 @@ public class EstudianteRepositoryImpl implements EstudianteRepository {
     }
 
     @Override
-    public List<EstudianteDTO> getEstudiantesOrderByApellido() {
-        return List.of();
+    public List<EstudianteDTO> getEstudiantesOrdered(String campo) {
+
+        String campoLower = campo.toLowerCase();
+
+        if (!this.campos.contains(campoLower)) {
+            throw new IllegalArgumentException("No existe el campo solicitado!");
+        }
+
+        TypedQuery<EstudianteDTO> query = em.createQuery(
+                "SELECT new dto.EstudianteDTO(e.lu, e.nombres, e.apellido, e.edad, e.genero, e.dni, e.ciudad) "
+                        + "FROM Estudiante e ORDER BY LOWER(e." + campoLower + ")",
+                EstudianteDTO.class
+        );
+        return query.getResultList();
     }
 
     @Override
     public List<EstudianteDTO> findAllByGenero(Genero genero) {
-        return List.of();
+
+
+        TypedQuery<EstudianteDTO> query = em.createQuery(
+                "SELECT new dto.EstudianteDTO(e.lu, e.nombres, e.apellido, e.edad, e.genero, e.dni, e.ciudad) "
+                        + "FROM Estudiante e WHERE e.genero = :genero",
+                EstudianteDTO.class
+        );
+        query.setParameter("genero", genero);
+        return query.getResultList();
+
     }
 
     @Override
