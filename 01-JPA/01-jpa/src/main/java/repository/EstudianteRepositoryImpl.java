@@ -30,17 +30,22 @@ public class EstudianteRepositoryImpl implements EstudianteRepository {
             }
             throw e;
         }
-
     }
 
     @Override
     public List<EstudianteDTO> getEstudiantesOrderByApellido() {
-        return List.of();
+        String jpql = "SELECT new dto.EstudianteDTO(e.lu, e.nombres, e.apellido, e.edad, e.genero, e.dni, e.ciudad) "
+                + "FROM Estudiante e ORDER BY e.apellido ASC, e.nombres ASC";
+        return em.createQuery(jpql, EstudianteDTO.class).getResultList();
     }
 
     @Override
     public List<EstudianteDTO> findAllByGenero(Genero genero) {
-        return List.of();
+        String jpql = "SELECT new dto.EstudianteDTO(e.lu, e.nombres, e.apellido, e.edad, e.genero, e.dni, e.ciudad) "
+                + "FROM Estudiante e WHERE e.genero = :genero ORDER BY e.apellido";
+        TypedQuery<EstudianteDTO> query = em.createQuery(jpql, EstudianteDTO.class);
+        query.setParameter("genero", genero);
+        return query.getResultList();
     }
 
     @Override
@@ -60,7 +65,7 @@ public class EstudianteRepositoryImpl implements EstudianteRepository {
                 "FROM Inscripcion i JOIN i.estudiante e " +
                 "WHERE i.carrera.id = :idCarrera " +
                 "  AND LOWER(e.ciudad) = LOWER(:ciudadResidencia)";
-        TypedQuery<EstudianteDTO> query = em.createQuery(jpql,EstudianteDTO.class);
+        TypedQuery<EstudianteDTO> query = em.createQuery(jpql, EstudianteDTO.class);
         query.setParameter("idCarrera", idCarrera);
         query.setParameter("ciudadResidencia", ciudadResidencia);
         return query.getResultList();

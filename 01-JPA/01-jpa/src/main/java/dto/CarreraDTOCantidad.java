@@ -1,19 +1,25 @@
 package dto;
 
 public class CarreraDTOCantidad {
-    private Long id;
-    private String nombre;
-    private Long cantidad;
+    private final Long id;
+    private final String nombre;
+    private final Long cantidad;
 
-    public Long getId(){
+    public CarreraDTOCantidad(Long id, String nombre, Long cantidad) {
+        this.id = id;
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public String getNombre(){
+    public String getNombre() {
         return nombre;
     }
 
-    public Long getCantidad(){
+    public Long getCantidad() {
         return cantidad;
     }
 

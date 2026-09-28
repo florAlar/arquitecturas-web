@@ -1,22 +1,27 @@
 package factory;
-import java.sql.SQLException;
-import javax.persistence.EntityManager;
 
+import repository.CarreraRepository;
 import repository.CarreraRepositoryImpl;
-import repository.InscripcionRepositoryImpl;
+import repository.EstudianteRepository;
 import repository.EstudianteRepositoryImpl;
+import repository.InscripcionRepository;
+import repository.InscripcionRepositoryImpl;
 
-public class MySQLFactory {
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+public class MySQLFactory extends FactoryEntityManager {
 
     private static MySQLFactory instance;
-    private EntityManagerFactory emf;
+    private final EntityManagerFactory emf;
 
     private MySQLFactory() {
         this.emf = Persistence.createEntityManagerFactory("MySqlPersistenceUnit");
     }
 
-    public static MySQLFactory getInstance() {
-        if(instance == null){
+    public static synchronized MySQLFactory getInstance() {
+        if (instance == null) {
             instance = new MySQLFactory();
         }
         return instance;
@@ -27,20 +32,25 @@ public class MySQLFactory {
         return emf.createEntityManager();
     }
 
+    @Override
     public void closeEntityManagerFactory() {
-        emf.close();
+        if (emf.isOpen()) {
+            emf.close();
+        }
     }
 
     @Override
-    public CarreraRepositoryImpl getCarreraRepository(EntityManager em) {
-        return CarreraRepositoryImpl.getInstance(em);
+    public CarreraRepository getCarreraRepository(EntityManager em) {
+        return new CarreraRepositoryImpl(em);
     }
+
     @Override
-    public EstudianteRepositoryImpl getEstudianteRepository(EntityManager em) {
-        return EstudianteRepositoryImpl.getInstance(em);
+    public EstudianteRepository getEstudianteRepository(EntityManager em) {
+        return new EstudianteRepositoryImpl(em);
     }
+
     @Override
-    public InscripcionRepositoryImpl getInscripcionRepository(EntityManager em) {
-        return InscripcionRepositoryImpl.getInstance(em);
+    public InscripcionRepository getInscripcionRepository(EntityManager em) {
+        return new InscripcionRepositoryImpl(em);
     }
 }

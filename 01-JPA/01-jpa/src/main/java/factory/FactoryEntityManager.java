@@ -1,23 +1,37 @@
 package factory;
 
-public class FactoryEntityManager {
+import repository.CarreraRepository;
+import repository.CarreraRepositoryImpl;
+import repository.EstudianteRepository;
+import repository.EstudianteRepositoryImpl;
+import repository.InscripcionRepository;
+import repository.InscripcionRepositoryImpl;
+
+import javax.persistence.EntityManager;
+
+/**
+ * Abstract Factory de EntityManager + repositorios del TP.
+ */
+public abstract class FactoryEntityManager {
 
     public static final int MYSQL = 1;
 
-    public abstract CarreraRepositoryImpl getCarreraRepository(EntityManager em);
-    public abstract EstudianteRepositoryImpl getEstudianteRepository(EntityManager em);
-    public abstract InscripcionRepositoryImpl getInscripcionRepository(EntityManager em);
-
-    public abstract void closeEntityManagerFactory();
     public abstract EntityManager createEntityManager();
 
-    public static FactoryEntityManager getDAOFactory(int persistence) throws SQLException {
+    public abstract void closeEntityManagerFactory();
+
+    public abstract CarreraRepository getCarreraRepository(EntityManager em);
+
+    public abstract EstudianteRepository getEstudianteRepository(EntityManager em);
+
+    public abstract InscripcionRepository getInscripcionRepository(EntityManager em);
+
+    public static FactoryEntityManager getDAOFactory(int persistence) {
         switch (persistence) {
             case MYSQL:
                 return MySQLFactory.getInstance();
             default:
-                return null;
+                throw new IllegalArgumentException("Persistencia no soportada: " + persistence);
         }
     }
-
 }

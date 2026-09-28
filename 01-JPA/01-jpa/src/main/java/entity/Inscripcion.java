@@ -2,7 +2,7 @@ package entity;
 
 import javax.persistence.*;
 
-@Table( // para impedir que un alumno se matricule en la misma carrera más de una vez
+@Table( // un alumno no se matricula dos veces en la misma carrera
         uniqueConstraints = @UniqueConstraint(
                 columnNames = {"estudiante_lu", "carrera_id"}
         )
@@ -21,16 +21,31 @@ public class Inscripcion {
     @JoinColumn(name = "carrera_id", nullable = false)
     private Carrera carrera;
 
-    private int antiguedad; // Antigüedad en la carrera
-    private boolean graduado; // Indica si se graduó o no
+    @Column(name = "anio_inscripcion", nullable = false)
+    private int anioInscripcion;
 
+    /** null si no egresó (CSV graduacion = 0) */
+    @Column(name = "anio_graduacion")
+    private Integer anioGraduacion;
+
+    private int antiguedad;
+
+    private boolean graduado;
 
     public Inscripcion() { }
 
-    //el constructor no incluye id, porque es generado automáticamente
-    public Inscripcion(Estudiante estudiante, Carrera carrera, int antiguedad, boolean graduado) {
+    public Inscripcion(
+            Estudiante estudiante,
+            Carrera carrera,
+            int anioInscripcion,
+            Integer anioGraduacion,
+            int antiguedad,
+            boolean graduado
+    ) {
         this.estudiante = estudiante;
         this.carrera = carrera;
+        this.anioInscripcion = anioInscripcion;
+        this.anioGraduacion = anioGraduacion;
         this.antiguedad = antiguedad;
         this.graduado = graduado;
     }
@@ -55,6 +70,22 @@ public class Inscripcion {
         this.carrera = carrera;
     }
 
+    public int getAnioInscripcion() {
+        return anioInscripcion;
+    }
+
+    public void setAnioInscripcion(int anioInscripcion) {
+        this.anioInscripcion = anioInscripcion;
+    }
+
+    public Integer getAnioGraduacion() {
+        return anioGraduacion;
+    }
+
+    public void setAnioGraduacion(Integer anioGraduacion) {
+        this.anioGraduacion = anioGraduacion;
+    }
+
     public int getAntiguedad() {
         return antiguedad;
     }
@@ -75,8 +106,8 @@ public class Inscripcion {
     public String toString() {
         return "Inscripcion{" +
                 "id=" + id +
-                ", estudiante=" + estudiante +
-                ", carrera=" + carrera +
+                ", anioInscripcion=" + anioInscripcion +
+                ", anioGraduacion=" + anioGraduacion +
                 ", antiguedad=" + antiguedad +
                 ", graduado=" + graduado +
                 '}';

@@ -1,18 +1,20 @@
 package repository;
 
 import dto.CarreraDTOCantidad;
+import dto.ReporteCarreraDTO;
 import entity.Carrera;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
+import java.util.Collections;
 import java.util.List;
 
 public class CarreraRepositoryImpl implements CarreraRepository {
 
     private final EntityManager em;
 
-    private CarreraRepositoryImpl(EntityManager em){
+    public CarreraRepositoryImpl(EntityManager em) {
         this.em = em;
     }
 
@@ -42,9 +44,19 @@ public class CarreraRepositoryImpl implements CarreraRepository {
         return query.getResultList();
     }
 
+    @Override
+    public Carrera getCarreraByName(String name) {
+        TypedQuery<Carrera> query = em.createQuery(
+                "SELECT c FROM Carrera c WHERE LOWER(c.nombre) = LOWER(:name)",
+                Carrera.class
+        );
+        query.setParameter("name", name);
+        return query.getResultStream().findFirst().orElse(null);
+    }
 
-
-
-
-
+    @Override
+    public List<ReporteCarreraDTO> generarReporteCarreras() {
+        // Punto 3 del enunciado — se implementa en JPQL cuando se complete el TP
+        return Collections.emptyList();
+    }
 }

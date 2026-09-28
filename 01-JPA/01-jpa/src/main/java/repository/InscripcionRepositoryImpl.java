@@ -37,14 +37,7 @@ public class InscripcionRepositoryImpl implements InscripcionRepository {
                 throw new IllegalArgumentException("No existe un estudiante con libreta " + nroLibreta);
             }
 
-            Carrera carrera = em.createQuery(
-                            "SELECT c FROM Carrera c WHERE c.id = :idCarrera",
-                            Carrera.class
-                    )
-                    .setParameter("idCarrera", idCarrera)
-                    .getResultStream()
-                    .findFirst()
-                    .orElse(null);
+            Carrera carrera = em.find(Carrera.class, idCarrera);
             if (carrera == null) {
                 throw new IllegalArgumentException("No existe una carrera con id " + idCarrera);
             }
@@ -61,7 +54,9 @@ public class InscripcionRepositoryImpl implements InscripcionRepository {
                 throw new IllegalStateException("El estudiante ya esta matriculado en la carrera");
             }
 
-            Inscripcion inscripcion = new Inscripcion(estudiante, carrera, 0, false);
+            // Alta de matrícula nueva: año actual no viene del CSV; antiguedad 0, no graduado
+            int anio = java.time.Year.now().getValue();
+            Inscripcion inscripcion = new Inscripcion(estudiante, carrera, anio, null, 0, false);
             estudiante.agregarInscripcion(inscripcion);
             carrera.agregarInscripcion(inscripcion);
             em.persist(inscripcion);
