@@ -59,15 +59,16 @@ public class CarreraRepositoryImpl implements CarreraRepository {
     @Override
     public List<ReporteCarreraDTO> generarReporteCarreras() {
         TypedQuery<ReporteCarreraDTO> query = em.createQuery(
-                "SELECT new dto.ReporteCarreraDTO(c.nombres, i.fechaIngreso, COUNT(i), "
-                        + "SUM(CASE WHEN i.graduado = 1 THEN 1 ELSE 0 END)) "
-                        + "FROM Inscripcion i JOIN i.carrera c "
-                        + "GROUP BY c.nombres, i.fechaIngreso "
-                        + "ORDER BY c.nombres, i.fechaIngreso",
+                "SELECT new dto.ReporteCarreraDTO(i.fechaEgreso, c.nombre, COUNT(i), "
+                        + "(SELECT COUNT(i2) FROM Inscripcion i2 WHERE i2.carrera = c AND i2.fechaIngreso = i.fechaEgreso)) "
+                        + "FROM Inscripcion i "
+                        + "JOIN i.carrera c "
+                        + "WHERE i.fechaEgreso != 0 "
+                        + "GROUP BY c.nombre, i.fechaEgreso "
+                        + "ORDER BY c.nombre, i.fechaEgreso",
                 ReporteCarreraDTO.class
         );
         return query.getResultList();
     }
-
 
 }
