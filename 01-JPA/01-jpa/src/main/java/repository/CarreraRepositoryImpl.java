@@ -57,12 +57,18 @@ public class CarreraRepositoryImpl implements CarreraRepository {
 
     @Override
     public List<ReporteCarreraDTO> generarReporteCarreras() {
+        // Punto 3 (corrección remoto): por carrera y año de egreso,
+        // egresados ese año + inscriptos cuyo año de ingreso coincide con ese año.
+        // Modelo local: anioGraduacion (null si no egresó) / anioInscripcion.
         TypedQuery<ReporteCarreraDTO> query = em.createQuery(
-                "SELECT new dto.ReporteCarreraDTO(c.nombre, i.anioInscripcion, COUNT(i), "
-                        + "SUM(CASE WHEN i.graduado = true THEN 1L ELSE 0L END)) "
-                        + "FROM Inscripcion i JOIN i.carrera c "
-                        + "GROUP BY c.nombre, i.anioInscripcion "
-                        + "ORDER BY c.nombre, i.anioInscripcion",
+                "SELECT new dto.ReporteCarreraDTO(c.nombre, i.anioGraduacion, "
+                        + "(SELECT COUNT(i2) FROM Inscripcion i2 WHERE i2.carrera = c AND i2.anioInscripcion = i.anioGraduacion), "
+                        + "COUNT(i)) "
+                        + "FROM Inscripcion i "
+                        + "JOIN i.carrera c "
+                        + "WHERE i.anioGraduacion IS NOT NULL "
+                        + "GROUP BY c.nombre, i.anioGraduacion "
+                        + "ORDER BY c.nombre, i.anioGraduacion",
                 ReporteCarreraDTO.class
         );
         return query.getResultList();
