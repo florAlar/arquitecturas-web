@@ -210,32 +210,6 @@ La lectura usa Apache Commons CSV y recursos en classpath (`CSV/`). Los reposito
 
 Requisitos: **JDK 17+**, **Maven 3.9+** y **Docker**.
 
-### Desde IntelliJ IDEA
-
-1. Abrir el `pom.xml` como proyecto Maven y esperar la carga de dependencias.
-2. Desde una terminal, ubicarse dentro de la carpeta del módulo `01-jpa` y levantar el contenedor:
-
-```bash
-docker compose up -d
-```
-
-3. Ejecutar la clase `Main` desde IntelliJ IDEA.
-
-### Desde consola
-
-Ubicarse dentro de la carpeta del módulo `01-jpa` y ejecutar:
-
-```bash
-docker compose up -d
-mvn -DskipTests compile exec:java
-```
-
-## Recursos
-
-- `src/main/resources/CSV/` — `estudiantes.csv`, `carreras.csv`, `estudianteCarrera.csv`
-- `src/main/resources/META-INF/persistence.xml` — unidad de persistencia JPA
-- `docker-compose.yml` — MySQL 8.4 para desarrollo/prueba
-
 ## Docker Compose (MySQL)
 
 Requisito: Docker Desktop (o engine + plugin Compose).
@@ -265,7 +239,13 @@ Comandos útiles:
 
 ```bash
 docker compose ps
-docker compose logs -f mysql
 docker compose down          # frena y borra el contenedor (conserva el volumen)
 docker compose down -v       # además borra mysql_data
 ```
+
+
+## Recursos
+
+- `src/main/resources/CSV/` — `estudiantes.csv`, `carreras.csv`, `estudianteCarrera.csv`
+- `src/main/resources/META-INF/persistence.xml` — unidad de persistencia JPA
+- `docker-compose.yml` — MySQL 8.4 para desarrollo/prueba
