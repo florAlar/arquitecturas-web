@@ -8,6 +8,7 @@ import entity.Carrera;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CarreraRepositoryImpl implements CarreraRepository {
@@ -57,20 +58,38 @@ public class CarreraRepositoryImpl implements CarreraRepository {
 
     @Override
     public List<ReporteCarreraDTO> generarReporteCarreras() {
-        // Punto 3 (corrección remoto): por carrera y año de egreso,
-        // egresados ese año + inscriptos cuyo año de ingreso coincide con ese año.
-        // Modelo local: anioGraduacion (null si no egresó) / anioInscripcion.
-        TypedQuery<ReporteCarreraDTO> query = em.createQuery(
-                "SELECT new dto.ReporteCarreraDTO(c.nombre, i.anioGraduacion, "
-                        + "(SELECT COUNT(i2) FROM Inscripcion i2 WHERE i2.carrera = c AND i2.anioInscripcion = i.anioGraduacion), "
-                        + "COUNT(i)) "
-                        + "FROM Inscripcion i "
-                        + "JOIN i.carrera c "
-                        + "WHERE i.anioGraduacion IS NOT NULL "
-                        + "GROUP BY c.nombre, i.anioGraduacion "
-                        + "ORDER BY c.nombre, i.anioGraduacion",
-                ReporteCarreraDTO.class
-        );
-        return query.getResultList();
+        // Punto 3: native SQL — por carrera y año, inscriptos (anio_inscripcion)
+        // y egresados (anio_graduacion). UNION ALL une ambos ejes de años.
+        String sql =
+                "SELECT c.nombre AS nombre_carrera, "
+                        + "       y.anio   AS anio, "
+                        + "       SUM(CASE WHEN y.tipo = 'I' THEN y.cnt ELSE 0 END) AS cant_inscriptos, "
+                        + "       SUM(CASE WHEN y.tipo = 'G' THEN y.cnt ELSE 0 END) AS cant_egresados "
+                        + "FROM Carrera c "
+                        + "JOIN ( "
+                        + "    SELECT i.carrera_id AS carrera_id, i.anio_inscripcion AS anio, 'I' AS tipo, COUNT(*) AS cnt "
+                        + "    FROM Inscripcion i "
+                        + "    GROUP BY i.carrera_id, i.anio_inscripcion "
+                        + "    UNION ALL "
+                        + "    SELECT i.carrera_id AS carrera_id, i.anio_graduacion AS anio, 'G' AS tipo, COUNT(*) AS cnt "
+                        + "    FROM Inscripcion i "
+                        + "    WHERE i.anio_graduacion IS NOT NULL "
+                        + "    GROUP BY i.carrera_id, i.anio_graduacion "
+                        + ") y ON y.carrera_id = c.id "
+                        + "GROUP BY c.nombre, y.anio "
+                        + "ORDER BY c.nombre ASC, y.anio ASC";
+
+        @SuppressWarnings("unchecked")
+        List<Object[]> rows = em.createNativeQuery(sql).getResultList();
+
+        List<ReporteCarreraDTO> reporte = new ArrayList<>();
+        for (Object[] r : rows) {
+            String nombreCarrera = (String) r[0];
+            int anio = ((Number) r[1]).intValue();
+            long cantInscriptos = ((Number) r[2]).longValue();
+            long cantEgresados = ((Number) r[3]).longValue();
+            reporte.add(new ReporteCarreraDTO(nombreCarrera, anio, cantInscriptos, cantEgresados));
+        }
+        return reporte;
     }
 }

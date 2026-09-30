@@ -4,9 +4,10 @@ Repositorio de entregas de la materia **Arquitecturas Web** (TUDAI / UNICEN).
 
 Cada carpeta de primer nivel corresponde a un **trabajo práctico independiente**, con su propio código, dependencias, base de datos y documentación.
 
-| Módulo                      | Tema                     | Documentación                         |
-| --------------------------- |--------------------------|---------------------------------------|
-| [00-JDBC](00-JDBC/00-jdbc/) | CSV, JDBC, DAO y Factory | [Ver JDBC](00-JDBC/00-jdbc/README.md) |
+| Módulo                      | Tema                              | Documentación                         |
+| --------------------------- |-----------------------------------|---------------------------------------|
+| [00-JDBC](00-JDBC/00-jdbc/) | CSV, JDBC, DAO y Factory          | [Ver JDBC](00-JDBC/00-jdbc/README.md) |
+| [01-JPA](01-JPA/01-jpa/)    | CSV, JPA, Repository y Factory    | [Ver JPA](01-JPA/01-jpa/README.md)    |
 
 ---
 
@@ -26,6 +27,18 @@ También se utiliza **Singleton** para centralizar la gestión de las instancias
 
 ---
 
-## Próximos módulos
+## 01-JPA — Integrador JPA
 
-A medida que se sumen nuevos trabajos (`01-…`, etc.), cada uno tendrá su propia carpeta y documentación, y se incorporará a este índice.
+**Ubicación:** [`01-JPA/01-jpa/`](01-JPA/01-jpa/)
+
+Trabajo práctico **enfocado en el mapeo objeto-relacional con JPA**, registro de estudiantes/carreras, carga desde **CSV** y consultas del enunciado (alta, matrícula, listados y reporte por año).
+
+### Cómo está resuelto
+
+La implementación utiliza los patrones **Repository** y **Factory** para separar el acceso a datos del resto de la aplicación y reducir el acoplamiento con el proveedor JPA / MySQL.
+
+También se utiliza **Singleton** para centralizar el `EntityManagerFactory` (`MySQLFactory`).
+
+La carga inicial de CSV la coordina `DataLoader`; las consultas y el reporte se resuelven en los `*RepositoryImpl` vía JPQL.
+
+**Podés ver la solución [acá](01-JPA/01-jpa/README.md).**

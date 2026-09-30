@@ -3,7 +3,7 @@ package loader;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-// coordina la carga inicial CSV → Entities → persist (una TX).
+// coordina la carga inicial CSV → Entities → persist (una sola transaccion).
 // orden de FKs :  Carrera → Estudiante → Inscripcion.
 // Los repositorios de consulta no usan esta clase. Solo se usa para la carga de datos inicial de la base.
 
