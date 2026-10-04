@@ -1,19 +1,27 @@
 package controller;
 
-
-import model.Estudiante;
+import dto.EstudianteDTO;
 import model.Genero;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import service.EstudianteService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/estudiantes")
-public class EstudianteController  {
+public class EstudianteController {
     // no necesita @Autowired porque en Spring moderno, si usás el constructor, no hace falta el @Autowired.
-    private EstudianteService estudianteService;
+    private final EstudianteService estudianteService;
 
     // Inyección de dependencias por constructor
     public EstudianteController(EstudianteService estudianteService) {
@@ -29,77 +37,46 @@ public class EstudianteController  {
     // Ordenar por apellido de la Z a la A (descendente):
     //      GET http://localhost:8080/estudiantes?sortBy=apellido&direction=desc
     @GetMapping("")
-    public ResponseEntity<?> getAll(
-        @RequestParam(defaultValue = "lu") String sortBy,
-        @RequestParam(defaultValue = "asc") String direction) {
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(estudianteService.findAllDTO(sortBy, direction));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
-        }
+    public ResponseEntity<List<EstudianteDTO.Response>> getAll(
+            @RequestParam(defaultValue = "lu") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
+        return ResponseEntity.status(HttpStatus.OK).body(estudianteService.listarEstudiantes(sortBy, direction));
     }
 
     // d) recuperar un estudiante, en base a su número de libreta universitaria.
     // GET: http://localhost:8080/estudiantes/1
-    @GetMapping("/{id}")
-    public ResponseEntity<?>getOne(@PathVariable Long id){
-        try {
-            java.util.Optional<dto.EstudianteDTO> estudianteDTO = estudianteService.findByIdDTO(id);
-            if (estudianteDTO.isPresent()) {
-                return ResponseEntity.status(HttpStatus.OK).body(estudianteDTO.get());
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("{\"error\":\"Error. No se encuentra el estudiante con la LU ingresada.\"}");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"error\":\"Error interno del servidor. Por favor intente más tarde.\"}");
-        }
+    @GetMapping("/{lu}")
+    public ResponseEntity<EstudianteDTO.Detail> getOne(@PathVariable Long lu) {
+        return ResponseEntity.status(HttpStatus.OK).body(estudianteService.getByLu(lu));
     }
 
 
     // e) recuperar todos los estudiantes, en base a su género.
-    // GET: http://localhost:8080/estudiantesgenero/MASCULINO
-    @GetMapping("genero/{genero}")
-    public ResponseEntity<?> getByGenero(@PathVariable Genero genero){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(estudianteService.findByGeneroDTO(genero));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
-        }
+    // GET: http://localhost:8080/estudiantes/genero/MASCULINO
+    @GetMapping("/genero/{genero}")
+    public ResponseEntity<List<EstudianteDTO.Response>> getByGenero(@PathVariable Genero genero) {
+        return ResponseEntity.status(HttpStatus.OK).body(estudianteService.listarPorGenero(genero));
     }
 
     // a) dar de alta un estudiante
     // POST: http://localhost:8080/estudiantes
     @PostMapping("")
-    public ResponseEntity<?> save(@RequestBody Estudiante entity) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(estudianteService.save(entity));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("{\"error\":\"Error. No se pudo ingresar, revise los campos e intente nuevamente.\"}");
-        }
+    public ResponseEntity<EstudianteDTO.Response> save(@RequestBody EstudianteDTO.Create in) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(estudianteService.altaEstudiante(in));
     }
 
     // actualizar un estudiante
     // PUT: http://localhost:8080/estudiantes/1
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id,@RequestBody Estudiante entity){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(estudianteService.update(id,entity));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo editar, revise los campos e intente nuevamente.\"}");
-        }
+    @PutMapping("/{lu}")
+    public ResponseEntity<EstudianteDTO.Response> update(@PathVariable Long lu, @RequestBody EstudianteDTO.Create in) {
+        return ResponseEntity.status(HttpStatus.OK).body(estudianteService.actualizar(lu, in));
     }
 
     // eliminar un estudiante
     // DELETE: http://localhost:8080/estudiantes/1
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id){
-        try{
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(estudianteService.delete(id));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. no se pudo eliminar intente nuevamente.\"}");
-        }
+    @DeleteMapping("/{lu}")
+    public ResponseEntity<Void> delete(@PathVariable Long lu) {
+        estudianteService.eliminar(lu);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

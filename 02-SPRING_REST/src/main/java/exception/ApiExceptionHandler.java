@@ -22,4 +22,14 @@ public class ApiExceptionHandler {
     public ResponseEntity<ApiError> handleInscripcionDuplicada(InscripcionDuplicadaException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError(ex.getMessage()));
     }
+
+    @ExceptionHandler(EstudianteDuplicadoException.class)
+    public ResponseEntity<ApiError> handleEstudianteDuplicado(EstudianteDuplicadoException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError(ex.getMessage()));
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ApiError> handleBadRequest(BadRequestException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiError(ex.getMessage()));
+    }
 }

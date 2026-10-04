@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import service.InscripcionService;
 
 @RestController
-@RequestMapping("/api/v1/inscripciones")
+@RequestMapping("/inscripciones")
 public class InscripcionController {
 
     private final InscripcionService inscripcionService;

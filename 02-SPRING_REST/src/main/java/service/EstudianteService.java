@@ -1,85 +1,58 @@
 package service;
 
 import dto.EstudianteDTO;
-import dto.EstudianteListadoDTO;
-import model.Estudiante;
 import model.Genero;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface EstudianteService {
+
     /**
-     * Servicio encargado de retornar un listado completo de estudiantes.
-     *
-     * @return Listado con estudiantes.
-     * @throws Exception e
+     * Servicio encargado de persistir un estudiante ingresado por parámetro.
+     * @param in DTO de alta del estudiante a persistir
+     * @return Estudiante persistido (DTO de respuesta).
      */
-    List<Estudiante> findAll()throws Exception;
-
-    List<EstudianteListadoDTO> findAllDTO()throws Exception;
-
+    EstudianteDTO.Response altaEstudiante(EstudianteDTO.Create in);
 
     /**
      * Servicio encargado de retornar un listado completo de estudiantes ordenado.
      * por ejemplo:
-     *1. Por defecto (Ordena por id de forma ascendente):
+     *1. Por defecto (Ordena por lu de forma ascendente):
      *      GET http://localhost:8080/estudiantes
      * 2. Ordenar por edad de menor a mayor (ascendente):
      *      GET http://localhost:8080/estudiantes?sortBy=edad&direction=asc
      * 3. Ordenar por nombre de la Z a la A (descendente):
      *      GET http://localhost:8080/estudiantes?sortBy=apellido&direction=desc
-     * @return Listado con estudiantes.
-     * @throws Exception e
+     * @return Listado con estudiantes (DTO sin inscripciones).
      */
-
-    List<Estudiante> findAll(String sortBy, String direction) throws Exception;
-
-    List<EstudianteListadoDTO> findAllDTO(String sortBy, String direction) throws Exception;
+    List<EstudianteDTO.Response> listarEstudiantes(String sortBy, String direction);
 
     /**
-     * Servicio encargado de buscar y retornar un estudiante coincidente con el id ingresado por parámetro.
+     * Servicio encargado de buscar y retornar un estudiante coincidente con la LU ingresada por parámetro.
      *
-     * @param id Identificador únido del estudiante.
-     * @return Estudiante coincidente con id.
-     * @throws Exception e
+     * @param lu Identificador único del estudiante (libreta universitaria).
+     * @return Estudiante coincidente con LU (DTO de detalle con inscripciones).
      */
-    Optional<Estudiante> findById(Long id)throws Exception;
-
-    Optional<EstudianteDTO> findByIdDTO(Long id) throws Exception;
+    EstudianteDTO.Detail getByLu(Long lu);
 
     /**
      * Servicio encargado de retornar un listado de estudiantes de un género.
      *
-     * @return Listado con estudiantes.
-     * @throws Exception e
+     * @return Listado con estudiantes (DTO sin inscripciones).
      */
-    List<Estudiante> findByGenero(Genero genero)throws Exception;
-
-    List<EstudianteListadoDTO> findByGeneroDTO(Genero genero) throws Exception;
-
-    /**
-     * Servicio encargado de persistir un estudiante ingresado por parámetro.
-     * @param estudiante estudiante a persistir
-     * @return Estudiante persistido con id asignado.
-     * @throws Exception e
-     */
-    Estudiante save(Estudiante estudiante)throws  Exception;
+    List<EstudianteDTO.Response> listarPorGenero(Genero genero);
 
     /**
      * Servicio encargado de actualizar un estudiante.
-     * @param lu Identificador único de la estudiante a actualizar.
-     * @param estudiante Estudiante con los datos a actualizar.
-     * @return Retorna al estudiante actualizado.
-     * @throws Exception e
+     * @param lu Identificador único del estudiante a actualizar.
+     * @param in DTO con los datos a actualizar.
+     * @return Retorna al estudiante actualizado (DTO de respuesta).
      */
-    Estudiante update(Long lu, Estudiante estudiante)throws Exception;
+    EstudianteDTO.Response actualizar(Long lu, EstudianteDTO.Create in);
 
     /**
-     * Servicio encargado de eliminar un estudiante correspondiente al id ingresado por parámetro.
+     * Servicio encargado de eliminar un estudiante correspondiente a la LU ingresada por parámetro.
      * @param lu Identificador único del estudiante a eliminar.
-     * @return True en caso de eliminación exitosa, caso contrario false.
-     * @throws Exception e
      */
-    boolean delete(Long lu)throws Exception;
+    void eliminar(Long lu);
 }
