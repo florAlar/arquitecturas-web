@@ -14,7 +14,7 @@ public record EstudianteDTO(
     Genero genero,
     Long dni,
     String ciudad,
-    List<InscripcionDTO> inscripciones
+    List<InscripcionDTO.Response> inscripciones
 ){}
 // Este código de una sola línea crea un registro que equivale a una clase tradicional
 // con muchos campos repetitivos. Java genera de manera automática:

@@ -94,11 +94,11 @@ public class EstudianteServiceImpl implements EstudianteService {
     // Método helper para mapear de Entidad -> DTO
     private EstudianteDTO convertirADto(Estudiante estudiante) {
         //armo la lista de InscripcionesDTO del estudiante
-        List<InscripcionDTO> inscripcionesDTO = estudiante.getInscripciones().stream()
-                .map(inscripcion -> new InscripcionDTO(
+        List<InscripcionDTO.Response> inscripcionesDTO = estudiante.getInscripciones().stream()
+                .map(inscripcion -> new InscripcionDTO.Response(
                         inscripcion.getId(),
+                        inscripcion.getEstudiante().getLu(),
                         inscripcion.getCarrera().getId(),
-                        inscripcion.getCarrera().getNombre(),
                         inscripcion.getAnioInscripcion(),
                         inscripcion.getAnioGraduacion(),
                         inscripcion.getAntiguedad(),
