@@ -2,6 +2,8 @@ package service;
 
 import jakarta.transaction.Transactional;
 import model.Estudiante;
+import model.Genero;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import repository.EstudianteRepository;
 
@@ -19,7 +21,21 @@ public class EstudianteServiceImpl implements EstudianteService {
 
     @Override
     public List<Estudiante> findAll() throws Exception {
-        return estudianteRepository.findAll();
+        try {
+            return estudianteRepository.findAll();
+        }catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public List<Estudiante> findAll(String sortBy, String direction) {
+        // Configuramos la dirección por defecto a ASC si no se envía de forma correcta
+        Sort.Direction dir = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+
+        // Creamos el objeto Sort usando el campo (sortBy) y la dirección (dir)
+        Sort orden = Sort.by(dir, sortBy);
+
+        return estudianteRepository.findAll(orden);
     }
 
     @Override
@@ -27,6 +43,15 @@ public class EstudianteServiceImpl implements EstudianteService {
         try{
             Optional<Estudiante> estudianteBuscado = estudianteRepository.findById(id);
             return estudianteBuscado;
+        }catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Estudiante> findByGenero(Genero genero) throws Exception {
+        try {
+            return estudianteRepository.findByGenero(genero);
         }catch (Exception e){
             throw new Exception(e.getMessage());
         }
