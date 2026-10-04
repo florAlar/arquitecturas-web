@@ -12,7 +12,7 @@ import service.EstudianteService;
 @RestController
 @RequestMapping("/estudiantes")
 public class EstudianteController  {
-    @Autowired
+    // no necesita @Autowired porque en Spring moderno, si usás el constructor, no hace falta el @Autowired.
     private EstudianteService estudianteService;
 
     // Inyección de dependencias por constructor
@@ -33,7 +33,7 @@ public class EstudianteController  {
         @RequestParam(defaultValue = "lu") String sortBy,
         @RequestParam(defaultValue = "asc") String direction) {
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(estudianteService.findAll(sortBy, direction));
+            return ResponseEntity.status(HttpStatus.OK).body(estudianteService.findAllDTO(sortBy, direction));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
         }
@@ -43,21 +43,27 @@ public class EstudianteController  {
     // GET: http://localhost:8080/estudiantes/1
     @GetMapping("/{id}")
     public ResponseEntity<?>getOne(@PathVariable Long id){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(estudianteService.findById(id));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. No se encuentra el objeto buscado" +
-                    ".\"}");
+        try {
+            java.util.Optional<dto.EstudianteDTO> estudianteDTO = estudianteService.findByIdDTO(id);
+            if (estudianteDTO.isPresent()) {
+                return ResponseEntity.status(HttpStatus.OK).body(estudianteDTO.get());
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("{\"error\":\"Error. No se encuentra el estudiante con la LU ingresada.\"}");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"error\":\"Error interno del servidor. Por favor intente más tarde.\"}");
         }
     }
+
 
     // e) recuperar todos los estudiantes, en base a su género.
     // GET: http://localhost:8080/estudiantesgenero/MASCULINO
     @GetMapping("genero/{genero}")
-    public ResponseEntity<?> getByGenero(@PathVariable String genero){
+    public ResponseEntity<?> getByGenero(@PathVariable Genero genero){
         try{
-            Genero queGenero = Genero.valueOf(genero);
-            return ResponseEntity.status(HttpStatus.OK).body(estudianteService.findByGenero(queGenero));
+            return ResponseEntity.status(HttpStatus.OK).body(estudianteService.findByGeneroDTO(genero));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
         }
@@ -66,11 +72,12 @@ public class EstudianteController  {
     // a) dar de alta un estudiante
     // POST: http://localhost:8080/estudiantes
     @PostMapping("")
-    public ResponseEntity<?> save(@RequestBody Estudiante entity){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(estudianteService.save(entity));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo ingresar, revise los campos e intente nuevamente.\"}");
+    public ResponseEntity<?> save(@RequestBody Estudiante entity) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(estudianteService.save(entity));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("{\"error\":\"Error. No se pudo ingresar, revise los campos e intente nuevamente.\"}");
         }
     }
 

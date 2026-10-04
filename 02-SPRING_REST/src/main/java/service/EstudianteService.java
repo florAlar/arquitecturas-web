@@ -1,5 +1,7 @@
 package service;
 
+import dto.EstudianteDTO;
+import dto.EstudianteListadoDTO;
 import model.Estudiante;
 import model.Genero;
 
@@ -15,6 +17,9 @@ public interface EstudianteService {
      */
     List<Estudiante> findAll()throws Exception;
 
+    List<EstudianteListadoDTO> findAllDTO()throws Exception;
+
+
     /**
      * Servicio encargado de retornar un listado completo de estudiantes ordenado.
      * por ejemplo:
@@ -28,7 +33,9 @@ public interface EstudianteService {
      * @throws Exception e
      */
 
-    List<Estudiante> findAll(String sortBy, String direction);
+    List<Estudiante> findAll(String sortBy, String direction) throws Exception;
+
+    List<EstudianteListadoDTO> findAllDTO(String sortBy, String direction) throws Exception;
 
     /**
      * Servicio encargado de buscar y retornar un estudiante coincidente con el id ingresado por parámetro.
@@ -39,6 +46,8 @@ public interface EstudianteService {
      */
     Optional<Estudiante> findById(Long id)throws Exception;
 
+    Optional<EstudianteDTO> findByIdDTO(Long id) throws Exception;
+
     /**
      * Servicio encargado de retornar un listado de estudiantes de un género.
      *
@@ -46,6 +55,8 @@ public interface EstudianteService {
      * @throws Exception e
      */
     List<Estudiante> findByGenero(Genero genero)throws Exception;
+
+    List<EstudianteListadoDTO> findByGeneroDTO(Genero genero) throws Exception;
 
     /**
      * Servicio encargado de persistir un estudiante ingresado por parámetro.
@@ -57,18 +68,18 @@ public interface EstudianteService {
 
     /**
      * Servicio encargado de actualizar un estudiante.
-     * @param id Identificador único de la estudiante a actualizar.
+     * @param lu Identificador único de la estudiante a actualizar.
      * @param estudiante Estudiante con los datos a actualizar.
      * @return Retorna al estudiante actualizado.
      * @throws Exception e
      */
-    Estudiante update(Long id, Estudiante estudiante)throws Exception;
+    Estudiante update(Long lu, Estudiante estudiante)throws Exception;
 
     /**
      * Servicio encargado de eliminar un estudiante correspondiente al id ingresado por parámetro.
-     * @param id Identificador único del estudiante a eliminar.
+     * @param lu Identificador único del estudiante a eliminar.
      * @return True en caso de eliminación exitosa, caso contrario false.
      * @throws Exception e
      */
-    boolean delete(Long id)throws Exception;
+    boolean delete(Long lu)throws Exception;
 }
