@@ -2,7 +2,7 @@ package loader;
 
 import model.Genero;
 
-/** Mapea los strings de género del CSV al enum Genero. Solo bootstrap. */
+// Mapea los strings distintos de género del CSV al enum Genero.
 public final class GeneroMapper {
 
     private GeneroMapper() {

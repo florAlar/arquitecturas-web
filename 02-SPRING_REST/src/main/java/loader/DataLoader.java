@@ -26,10 +26,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Bootstrap CSV → DB (una TX). Orden FK: Carrera → Estudiante → Inscripcion.
- * Solo arranque; no lo usan controllers/services de negocio.
- */
+
+// Bootstrap CSV → DB (una unica TX). Orden FK: Carrera → Estudiante → Inscripcion.
+// Solo para arranque; no lo usan controllers/services de negocio.
+
 @Component
 public class DataLoader implements ApplicationRunner {
 

@@ -10,7 +10,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 		"service",
 		"controller",
 		"mapper",
-		"dto"
+		"dto",
+		"exception"
 })
 @EntityScan("model")
 @EnableJpaRepositories("repository")
