@@ -22,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Estudiante {
     @Id
-    @Setter(AccessLevel.NONE)
+    @Setter //(AccessLevel.NONE)
     private Long lu;
 
     @Column(nullable = false)
