@@ -18,6 +18,11 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(ex.getMessage()));
     }
 
+    @ExceptionHandler(CarreraDuplicadaException.class)
+    public ResponseEntity<ApiError> handleCarreraDuplicada(CarreraDuplicadaException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError(ex.getMessage()));
+    }
+
     @ExceptionHandler(InscripcionDuplicadaException.class)
     public ResponseEntity<ApiError> handleInscripcionDuplicada(InscripcionDuplicadaException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError(ex.getMessage()));

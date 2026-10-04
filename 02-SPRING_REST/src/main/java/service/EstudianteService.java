@@ -43,6 +43,16 @@ public interface EstudianteService {
     List<EstudianteDTO.Response> listarPorGenero(Genero genero);
 
     /**
+     * g) Estudiantes de una carrera filtrados por ciudad de residencia.
+     * Ejemplo: GET http://localhost:8080/estudiantes/carrera/1?ciudad=Tandil
+     *
+     * @param idCarrera id de la carrera
+     * @param ciudad ciudad de residencia (obligatoria)
+     * @return Listado con estudiantes (DTO sin inscripciones).
+     */
+    List<EstudianteDTO.Response> listarPorCarreraYCiudad(Long idCarrera, String ciudad);
+
+    /**
      * Servicio encargado de actualizar un estudiante.
      * @param lu Identificador único del estudiante a actualizar.
      * @param in DTO con los datos a actualizar.

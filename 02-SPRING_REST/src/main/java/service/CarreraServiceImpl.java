@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import repository.CarreraRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -79,6 +80,15 @@ public class CarreraServiceImpl implements CarreraService {
     @Override
     @Transactional(readOnly = true)
     public List<ReporteCarreraDTO> generarReporteCarreras() {
-        return carreraRepository.generarReporteCarreras();
+        List<Object[]> rows = carreraRepository.generarReporteCarrerasRaw();
+        List<ReporteCarreraDTO> reporte = new ArrayList<>(rows.size());
+        for (Object[] r : rows) {
+            String nombreCarrera = (String) r[0];
+            int anio = ((Number) r[1]).intValue();
+            long cantInscriptos = ((Number) r[2]).longValue();
+            long cantEgresados = ((Number) r[3]).longValue();
+            reporte.add(new ReporteCarreraDTO(nombreCarrera, anio, cantInscriptos, cantEgresados));
+        }
+        return reporte;
     }
 }

@@ -4,10 +4,11 @@ Repositorio de entregas de la materia **Arquitecturas Web** (TUDAI / UNICEN).
 
 Cada carpeta de primer nivel corresponde a un **trabajo práctico independiente**, con su propio código, dependencias, base de datos y documentación.
 
-| Módulo                      | Tema                              | Documentación                         |
-| --------------------------- |-----------------------------------|---------------------------------------|
-| [00-JDBC](00-JDBC/00-jdbc/) | CSV, JDBC, DAO y Factory          | [Ver JDBC](00-JDBC/00-jdbc/README.md) |
-| [01-JPA](01-JPA/01-jpa/)    | CSV, JPA, Repository y Factory    | [Ver JPA](01-JPA/01-jpa/README.md)    |
+| Módulo                            | Tema                                           | Documentación                                   |
+| --------------------------------- | ---------------------------------------------- | ----------------------------------------------- |
+| [00-JDBC](00-JDBC/00-jdbc/)       | CSV, JDBC, DAO y Factory                       | [Ver JDBC](00-JDBC/00-jdbc/README.md)           |
+| [01-JPA](01-JPA/01-jpa/)          | CSV, JPA, Repository y Factory                 | [Ver JPA](01-JPA/01-jpa/README.md)              |
+| [02-SPRING_REST](02-SPRING_REST/) | CSV, Spring Boot, REST, JPA y capas de servicio | [Ver Spring REST](02-SPRING_REST/README.md)    |
 
 ---
 
@@ -42,3 +43,19 @@ También se utiliza **Singleton** para centralizar el `EntityManagerFactory` (`M
 La carga inicial de CSV la coordina `DataLoader`; las consultas y el reporte se resuelven en los `*RepositoryImpl` vía JPQL.
 
 **Podés ver la solución [acá](01-JPA/01-jpa/README.md).**
+
+---
+
+## 02-SPRING_REST — Integrador Spring REST
+
+**Ubicación:** [`02-SPRING_REST/`](02-SPRING_REST/)
+
+Trabajo práctico **enfocado en una API REST con Spring Boot**, mismo dominio estudiantes/carreras, carga desde **CSV** y endpoints del enunciado (alta, matrícula, listados, reporte por año).
+
+### Cómo está resuelto
+
+La implementación usa **Controller → Service → Repository** (Spring Data JPA), **DTO + Mapper** hacia la API y **H2** en memoria para la demo local.
+
+La carga inicial de CSV la coordina `DataLoader` (`ApplicationRunner`); las consultas f/g/h viven en los repositorios (JPQL / native) y se exponen por HTTP.
+
+**Podés ver la solución [acá](02-SPRING_REST/README.md).**

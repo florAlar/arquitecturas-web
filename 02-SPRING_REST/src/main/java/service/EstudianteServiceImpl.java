@@ -2,6 +2,7 @@ package service;
 
 import dto.EstudianteDTO;
 import exception.BadRequestException;
+import exception.CarreraNotFoundException;
 import exception.EstudianteDuplicadoException;
 import exception.EstudianteNotFoundException;
 import mapper.EstudianteMapper;
@@ -10,6 +11,7 @@ import model.Genero;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import repository.CarreraRepository;
 import repository.EstudianteRepository;
 
 import java.util.List;
@@ -24,11 +26,17 @@ public class EstudianteServiceImpl implements EstudianteService {
     );
 
     private final EstudianteRepository estudianteRepository;
+    private final CarreraRepository carreraRepository;
     private final EstudianteMapper estudianteMapper;
 
     // Inyección de dependencias por constructor
-    public EstudianteServiceImpl(EstudianteRepository estudianteRepository, EstudianteMapper estudianteMapper) {
+    public EstudianteServiceImpl(
+            EstudianteRepository estudianteRepository,
+            CarreraRepository carreraRepository,
+            EstudianteMapper estudianteMapper
+    ) {
         this.estudianteRepository = estudianteRepository;
+        this.carreraRepository = carreraRepository;
         this.estudianteMapper = estudianteMapper;
     }
 
@@ -91,6 +99,20 @@ public class EstudianteServiceImpl implements EstudianteService {
         // 1. Buscamos las entidades de la base de datos
         // 2. Las convertimos a DTO usando Stream API de Java
         return estudianteRepository.findByGenero(genero).stream()
+                .map(estudianteMapper::toResponse)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<EstudianteDTO.Response> listarPorCarreraYCiudad(Long idCarrera, String ciudad) {
+        if (ciudad == null || ciudad.isBlank()) {
+            throw new BadRequestException("ciudad es obligatoria");
+        }
+        if (!carreraRepository.existsById(idCarrera)) {
+            throw new CarreraNotFoundException(idCarrera);
+        }
+        return estudianteRepository.findByCarreraIdAndCiudad(idCarrera, ciudad.trim()).stream()
                 .map(estudianteMapper::toResponse)
                 .toList();
     }
