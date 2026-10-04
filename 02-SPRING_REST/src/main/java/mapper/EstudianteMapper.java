@@ -5,6 +5,7 @@ import dto.InscripcionDTO;
 import model.Estudiante;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -43,12 +44,20 @@ public class EstudianteMapper {
         );
     }
 
+    // Metodo helper para mapear listas de Entidad -> DTO de listado
+    public List<EstudianteDTO.Response> toResponseList(Collection<Estudiante> estudiantes) {
+        if (estudiantes == null || estudiantes.isEmpty()) {
+            return List.of();
+        }
+        return estudiantes.stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
     // Metodo helper para mapear de Entidad -> DTO de detalle (con inscripciones)
     public EstudianteDTO.Detail toDetail(Estudiante e) {
         // armo la lista de InscripcionDTO.Response del estudiante
-        List<InscripcionDTO.Response> insc = e.getInscripciones().stream()
-                .map(inscripcionMapper::toResponse)
-                .toList();
+        List<InscripcionDTO.Response> insc = inscripcionMapper.toResponseList(e.getInscripciones());
         // armo el EstudianteDTO.Detail
         return new EstudianteDTO.Detail(
                 e.getLu(),
