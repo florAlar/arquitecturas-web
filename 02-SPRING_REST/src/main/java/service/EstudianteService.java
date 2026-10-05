@@ -1,7 +1,6 @@
 package service;
 
 import dto.EstudianteDTO;
-import dto.EstudianteListadoDTO;
 import model.Estudiante;
 import model.Genero;
 
@@ -17,7 +16,7 @@ public interface EstudianteService {
      */
     List<Estudiante> findAll()throws Exception;
 
-    List<EstudianteListadoDTO> findAllDTO()throws Exception;
+    List<EstudianteDTO.Listado> findAllDTO()throws Exception;
 
 
     /**
@@ -35,7 +34,7 @@ public interface EstudianteService {
 
     List<Estudiante> findAll(String sortBy, String direction) throws Exception;
 
-    List<EstudianteListadoDTO> findAllDTO(String sortBy, String direction) throws Exception;
+    List<EstudianteDTO.Listado> findAllDTO(String sortBy, String direction) throws Exception;
 
     /**
      * Servicio encargado de buscar y retornar un estudiante coincidente con el id ingresado por parámetro.
@@ -46,7 +45,7 @@ public interface EstudianteService {
      */
     Optional<Estudiante> findById(Long id)throws Exception;
 
-    Optional<EstudianteDTO> findByIdDTO(Long id) throws Exception;
+    Optional<EstudianteDTO.Detalle> findByIdDTO(Long id) throws Exception;
 
     /**
      * Servicio encargado de retornar un listado de estudiantes de un género.
@@ -56,7 +55,7 @@ public interface EstudianteService {
      */
     List<Estudiante> findByGenero(Genero genero)throws Exception;
 
-    List<EstudianteListadoDTO> findByGeneroDTO(Genero genero) throws Exception;
+    List<EstudianteDTO.Listado> findByGeneroDTO(Genero genero) throws Exception;
 
     /**
      * Servicio encargado de persistir un estudiante ingresado por parámetro.

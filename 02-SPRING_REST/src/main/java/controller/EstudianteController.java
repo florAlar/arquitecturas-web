@@ -1,19 +1,19 @@
 package controller;
 
 
+import dto.EstudianteDTO;
 import model.Estudiante;
 import model.Genero;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.EstudianteService;
 
 @RestController
-@RequestMapping("/estudiantes")
+@RequestMapping("/api/v1/estudiantes")
 public class EstudianteController  {
     // no necesita @Autowired porque en Spring moderno, si usás el constructor, no hace falta el @Autowired.
-    private EstudianteService estudianteService;
+    private final EstudianteService estudianteService;
 
     // Inyección de dependencias por constructor
     public EstudianteController(EstudianteService estudianteService) {
@@ -44,7 +44,7 @@ public class EstudianteController  {
     @GetMapping("/{id}")
     public ResponseEntity<?>getOne(@PathVariable Long id){
         try {
-            java.util.Optional<dto.EstudianteDTO> estudianteDTO = estudianteService.findByIdDTO(id);
+            java.util.Optional<EstudianteDTO.Detalle> estudianteDTO = estudianteService.findByIdDTO(id);
             if (estudianteDTO.isPresent()) {
                 return ResponseEntity.status(HttpStatus.OK).body(estudianteDTO.get());
             } else {

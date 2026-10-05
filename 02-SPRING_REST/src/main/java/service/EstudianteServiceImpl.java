@@ -1,14 +1,14 @@
 package service;
 
 import dto.EstudianteDTO;
-import dto.EstudianteListadoDTO;
-import dto.InscripcionDTO;
-import jakarta.transaction.Transactional;
+import mapper.EstudianteMapper;
 import model.Estudiante;
 import model.Genero;
+import repository.EstudianteRepository;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import repository.EstudianteRepository;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,11 +16,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class EstudianteServiceImpl implements EstudianteService {
-    private EstudianteRepository estudianteRepository;
+    private final EstudianteRepository estudianteRepository;
+    private final EstudianteMapper estudianteMapper;
 
     // Inyección de dependencias por constructor
-    public EstudianteServiceImpl(EstudianteRepository estudianteRepository) {
+    public EstudianteServiceImpl(EstudianteRepository estudianteRepository, EstudianteMapper estudianteMapper) {
         this.estudianteRepository = estudianteRepository;
+        this.estudianteMapper = estudianteMapper;
     }
 
     @Override
@@ -48,14 +50,14 @@ public class EstudianteServiceImpl implements EstudianteService {
     }
 
     @Override
-    public List<EstudianteListadoDTO> findAllDTO() throws Exception {
+    public List<EstudianteDTO.Listado> findAllDTO() throws Exception {
         try {
             // 1. Buscamos las entidades de la base de datos
             List<Estudiante> estudiantes = findAll();
 
             // 2. Las convertimos a DTO usando Stream API de Java
             return estudiantes.stream()
-                    .map(this::convertirAListadoDto)
+                    .map(estudianteMapper::toListado)
                     .collect(Collectors.toList());
         }catch (Exception e){
             throw new Exception(e.getMessage());
@@ -63,61 +65,20 @@ public class EstudianteServiceImpl implements EstudianteService {
     }
 
     @Override
-    public List<EstudianteListadoDTO> findAllDTO(String sortBy, String direction) throws  Exception {
+    public List<EstudianteDTO.Listado> findAllDTO(String sortBy, String direction) throws  Exception {
         try {
             // 1. Buscamos las entidades de la base de datos
             List<Estudiante> estudiantes = findAll(sortBy, direction);
 
             // 2. Las convertimos a DTO usando Stream API de Java
             return estudiantes.stream()
-                    .map(this::convertirAListadoDto)
+                    .map(estudianteMapper::toListado)
                     .collect(Collectors.toList());
         }catch (Exception e){
             throw new Exception(e.getMessage());
         }
     }
 
-    // Método helper para mapear de Entidad -> DTO
-    private EstudianteListadoDTO convertirAListadoDto(Estudiante estudiante) {
-        //armo el EstudianteListadoDTO sin las inscripciones
-        return new EstudianteListadoDTO(
-                estudiante.getLu(),
-                estudiante.getNombres(),
-                estudiante.getApellido(),
-                estudiante.getEdad(),
-                estudiante.getGenero(),
-                estudiante.getDni(),
-                estudiante.getCiudad()
-        );
-    }
-
-    // Método helper para mapear de Entidad -> DTO
-    private EstudianteDTO convertirADto(Estudiante estudiante) {
-        //armo la lista de InscripcionesDTO del estudiante
-        List<InscripcionDTO.Response> inscripcionesDTO = estudiante.getInscripciones().stream()
-                .map(inscripcion -> new InscripcionDTO.Response(
-                        inscripcion.getId(),
-                        inscripcion.getEstudiante().getLu(),
-                        inscripcion.getCarrera().getId(),
-                        inscripcion.getAnioInscripcion(),
-                        inscripcion.getAnioGraduacion(),
-                        inscripcion.getAntiguedad(),
-                        inscripcion.isGraduado()
-                ))
-                .collect(Collectors.toList());
-
-        //armo el EstudianteDTO
-        return new EstudianteDTO(
-                estudiante.getLu(),
-                estudiante.getNombres(),
-                estudiante.getApellido(),
-                estudiante.getEdad(),
-                estudiante.getGenero(),
-                estudiante.getDni(),
-                estudiante.getCiudad(),
-                inscripcionesDTO
-        );
-    }
 
     @Override
     public Optional<Estudiante> findById(Long id) throws Exception {
@@ -129,11 +90,11 @@ public class EstudianteServiceImpl implements EstudianteService {
         }
     }
 
-    public Optional<EstudianteDTO> findByIdDTO(Long id) throws Exception {
+    public Optional<EstudianteDTO.Detalle> findByIdDTO(Long id) throws Exception {
         try{
             Optional<Estudiante> estudiante = estudianteRepository.findById(id);
             if (estudiante.isPresent())
-                return Optional.of(convertirADto(estudiante.get()));
+                return Optional.of(estudianteMapper.toDetalle(estudiante.get()));
             else
                 return Optional.empty();
         }catch (Exception e){
@@ -151,14 +112,14 @@ public class EstudianteServiceImpl implements EstudianteService {
     }
 
     @Override
-    public List<EstudianteListadoDTO> findByGeneroDTO(Genero genero) throws Exception {
+    public List<EstudianteDTO.Listado> findByGeneroDTO(Genero genero) throws Exception {
         try {
             // 1. Buscamos las entidades de la base de datos
             List<Estudiante> estudiantes = findByGenero(genero);
 
             // 2. Las convertimos a DTO usando Stream API de Java
             return estudiantes.stream()
-                    .map(this::convertirAListadoDto)
+                    .map(estudianteMapper::toListado)
                     .collect(Collectors.toList());
         }catch (Exception e){
             throw new Exception(e.getMessage());
