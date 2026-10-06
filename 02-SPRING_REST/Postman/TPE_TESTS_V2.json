@@ -1,0 +1,1472 @@
+{
+  "info": {
+    "_postman_id": "302afa97-0707-45f6-8e1f-16ec7858fc05",
+    "name": "TP3",
+    "description": "# Coleccion de Tests para la implementacion de una API que se realiza en el Practico 3\n\n# Los test que se realizar siguen \"casi\" un happy path, POR LO TANTO CUALQUIER RERUN PUEDE DAR OTROS RESULTADOS, YA SEA POR EL ABM DE UN ELEMENTO QUE NO EXISTA O HAYA SIDO ALTERADO\n\n# IMPORTANTE: LAS VARIABLES DE LOS REQUEST SE ENCUENTRAN EN SCRIPTS -> BEFORE REQUEST",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58721960",
+    "_collection_link": "https://go.postman.co/collection/58721960-302afa97-0707-45f6-8e1f-16ec7858fc05?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "TEST_Estudiantes",
+      "item": [
+        {
+          "name": "getEstudiantes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Retorna un status 200 si devuelve una lista con estudiantes\", function () {\n  pm.response.to.have.status(200);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes"
+              ]
+            },
+            "description": "Obtiene una lista con todos los estudiantes"
+          },
+          "response": []
+        },
+        {
+          "name": "getEstudiantesByLU",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Retorna un status 200 si devuelve un estudiante\", function () {\n  pm.response.to.have.status(200);\n});\n\npm.test(\"Comprobar si el estudiante 'Isidro Blackmuir' tiene un dni '71779527'\", function () {\n    var jsonData = pm.response.json();\n    pm.expect(jsonData.dni).to.eql(71779527);\n});"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\",34978)"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes",
+                "{{id}}"
+              ]
+            },
+            "description": "Consulta de LU.\n\nDEBE retornarnar 200 OK en caso de ocurrencia.\n\nDEBE retornarnar 404 en caso de que no exista."
+          },
+          "response": []
+        },
+        {
+          "name": "getEstudiantesByLUError",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Retorna un status 404 si no encuentra el estudiante por su LU\", function () {\n  pm.response.to.have.status(404);\n});"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\",10000000)"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes",
+                "{{id}}"
+              ]
+            },
+            "description": "Consulta de LU.\n\nDEBE retornarnar 200 OK en caso de ocurrencia.\n\nDEBE retornarnar 404 en caso de que no exista."
+          },
+          "response": []
+        },
+        {
+          "name": "getEstudiantesByGenero",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Devuelve un array\", function () {\n    const estudiantes = pm.response.json();\n\n    pm.expect(estudiantes).to.be.an(\"array\");\n});\n\npm.test(\"Todos son de género MASCULINO\", function () {\n    const estudiantes = pm.response.json();\n\n    estudiantes.forEach(estudiante => {\n        pm.expect(estudiante.genero).to.eql(\"MASCULINO\");\n    });\n});"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"genero\",\"Masculino\")"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes/genero/{{genero}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes",
+                "genero",
+                "{{genero}}"
+              ]
+            },
+            "description": "Obtiene todos los estudiantes de acuerdo a su genero\n\nSi hay ocurrencias 200 ok\n\nSi no 400"
+          },
+          "response": []
+        },
+        {
+          "name": "getEstudiantesByGeneroSinEstudiantes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Devuelve un array\", function () {\n    const estudiantes = pm.response.json();\n\n    pm.expect(estudiantes).to.be.an(\"array\");\n});\n\npm.test(\"No se encontraron estudiantes con ese género\", function () {\n    const estudiantes = pm.response.json();\n\n    pm.expect(estudiantes).to.be.an(\"array\");\n    pm.expect(estudiantes).to.have.lengthOf(0);\n});"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"genero\",\"Transgenero\")"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes/genero/{{genero}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes",
+                "genero",
+                "{{genero}}"
+              ]
+            },
+            "description": "Obtiene todos los estudiantes de acuerdo a su genero\n\nSi hay ocurrencias 200 ok\n\nSi no 400"
+          },
+          "response": []
+        },
+        {
+          "name": "getEstudiantesByGeneroInvalido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar 404 si el genero es invalido\", function () {\n    pm.response.to.have.status(404);\n});\n"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"genero\",\"cualquierfrula\")"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes/genero/{{genero}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes",
+                "genero",
+                "{{genero}}"
+              ]
+            },
+            "description": "Obtiene todos los estudiantes de acuerdo a su genero\n\nSi hay ocurrencias 200 ok\n\nSi no 400"
+          },
+          "response": []
+        },
+        {
+          "name": "getEstudiantesByCarrera",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n\npm.test(\"Status 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Devuelve un array\", function () { \n    const estudiantes = pm.response.json();\n\n    pm.expect(estudiantes).to.be.an(\"array\");\n});\n\npm.test(\"Todos son de Rauch\", function () {\n    const estudiantes = pm.response.json();\n\n    estudiantes.forEach(estudiante => {\n        pm.expect(estudiante.ciudad).to.eql(\"Rauch\");\n    });\n});\n"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\", 1);\npm.variables.set(\"ciudad\", \"Rauch\");"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes/carrera/{{id}}?ciudad={{ciudad}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes",
+                "carrera",
+                "{{id}}"
+              ],
+              "query": [
+                {
+                  "key": "ciudad",
+                  "value": "{{ciudad}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getEstudiantesByCarreraInvalida",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar 404 si no encuentra la carrera\", function () {\n    pm.response.to.have.status(404);\n});\n\n"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\", 20);\npm.variables.set(\"ciudad\", \"Rauch\");"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes/carrera/{{id}}?ciudad={{ciudad}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes",
+                "carrera",
+                "{{id}}"
+              ],
+              "query": [
+                {
+                  "key": "ciudad",
+                  "value": "{{ciudad}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getEstudiantesByCarreraSinEstudiantes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Devuelve un array\", function () {\n    const estudiantes = pm.response.json();\n\n    pm.expect(estudiantes).to.be.an(\"array\");\n});\n\npm.test(\"No se encontraron estudiantes de la ciudad ingresada\", function () {\n    const estudiantes = pm.response.json();\n\n    pm.expect(estudiantes).to.be.an(\"array\");\n    pm.expect(estudiantes).to.have.lengthOf(0);\n});"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\", 1);\npm.variables.set(\"ciudad\", \"Olavarria\");"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes/carrera/:id?ciudad={{ciudad}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes",
+                "carrera",
+                ":id"
+              ],
+              "query": [
+                {
+                  "key": "ciudad",
+                  "value": "{{ciudad}}"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getEstudiantesOrdered",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Devuelve un array\", function () {\n    const estudiantes = pm.response.json();\n\n    pm.expect(estudiantes).to.be.an(\"array\");\n});\n"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"field\", \"nombres\");\npm.variables.set(\"order\", \"asc\");"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes?sortBy={{field}}&direction={{order}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes"
+              ],
+              "query": [
+                {
+                  "key": "sortBy",
+                  "value": "{{field}}"
+                },
+                {
+                  "key": "direction",
+                  "value": "{{order}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getEstudiantesOrderedInvalido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Retorna 400 si el campo de ordenación no es válido\", function () {\n    pm.response.to.have.status(400);\n});\n"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"field\", \"cualquierfrula\");\npm.variables.set(\"order\", \"asc\");"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes?sortBy={{field}}&direction={{order}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes"
+              ],
+              "query": [
+                {
+                  "key": "sortBy",
+                  "value": "{{field}}"
+                },
+                {
+                  "key": "direction",
+                  "value": "{{order}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CreateEstudiante",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar un 201 si se crea un estudiante\", function () {\n    pm.response.to.have.status(201);\n});"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"lu\", 99999);\npm.variables.set(\"nombres\", \"Agustin\");\npm.variables.set(\"apellido\", \"Cidoni\");\npm.variables.set(\"edad\", 27);\npm.variables.set(\"genero\", \"Masculino\");\npm.variables.set(\"dni\", 42177228);\npm.variables.set(\"ciudad\", \"Tandil\");"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"lu\": {{lu}},\n    \"nombres\": \"{{nombres}}\",\n    \"apellido\": \"{{apellidos}}\",\n    \"edad\": {{edad}},\n    \"genero\": \"{{genero}}\",\n    \"dni\": {{dni}},\n    \"ciudad\": \"{{ciudad}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CreateEstudianteInvalido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar un 400 si se no se ingresa el LU del estudiante\", function () {\n    pm.response.to.have.status(400);\n});"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.variables.set(\"nombres\", \"Agustin\");\npm.variables.set(\"apellido\", \"Cidoni\");\npm.variables.set(\"edad\", 27);\npm.variables.set(\"genero\", \"Masculino\");\npm.variables.set(\"dni\", 42177228);\npm.variables.set(\"ciudad\", \"Tandil\");"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombres\": \"{{nombres}}\",\n    \"apellido\": \"{{apellidos}}\",\n    \"edad\": {{edad}},\n    \"genero\": \"{{genero}}\",\n    \"dni\": {{dni}},\n    \"ciudad\": \"{{ciudad}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CreateEstudianteExistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar un 409 si se intenta crear un estudiante existente\", function () {\n    pm.response.to.have.status(409);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"lu\": {{lu}},\n    \"nombres\": \"{{nombres}}\",\n    \"apellido\": \"{{apellidos}}\",\n    \"edad\": {{edad}},\n    \"genero\": \"{{genero}}\",\n    \"dni\": {{dni}},\n    \"ciudad\": \"{{ciudad}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateEstudiante",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar 200 si el estudiante se actualiza correctamente\", function () {\n    pm.response.to.have.status(200);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombres\": \"{{nombres}}\",\n    \"apellido\": \"{{apellido}}\",\n    \"edad\": {{edad}},\n    \"genero\": \"{{genero}}\",\n    \"dni\": {{dni}},\n    \"ciudad\": \"{{ciudad}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes/:lu",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes",
+                ":lu"
+              ],
+              "variable": [
+                {
+                  "key": "lu",
+                  "value": "99999"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateEstudianteLUInvalido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar 404 si no se encuentra el estudiante\", function () {\n    pm.response.to.have.status(404);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombres\": \"{{nombres}}\",\n    \"apellido\": \"{{apellido}}\",\n    \"edad\": {{edad}},\n    \"genero\": \"{{genero}}\",\n    \"dni\": {{dni}},\n    \"ciudad\": \"{{ciudad}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes/:lu",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes",
+                ":lu"
+              ],
+              "variable": [
+                {
+                  "key": "lu",
+                  "value": "999999"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteEstudiante",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar 204 si se borra correctamente\", function () {\n    pm.response.to.have.status(204);\n});"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"lu\", 99999);\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes/{{lu}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes",
+                "{{lu}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteEstudianteInvalido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar 404 si no se encuentra el estudiante\", function () {\n    pm.response.to.have.status(404);\n});"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"lu\", 999999);\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes/{{lu}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes",
+                "{{lu}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Test Realizados en el endpoint \"Estudiantes\""
+    },
+    {
+      "name": "TEST_Carrera",
+      "item": [
+        {
+          "name": "getCarreraReporte",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar un status 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Devuelve un array\", function () {\n    const estudiantes = pm.response.json();\n\n    pm.expect(estudiantes).to.be.an(\"array\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/carreras/reporte",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "carreras",
+                "reporte"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCarrerasConInscriptosOrdenadas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar un status 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Devuelve un array\", function () {\n    const estudiantes = pm.response.json();\n\n    pm.expect(estudiantes).to.be.an(\"array\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/carreras/con_inscriptos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "carreras",
+                "con_inscriptos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CreateCarrera",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\",16)\npm.variables.set(\"nombre_carrera\", \"Diplomatura en IA\")\npm.variables.set(\"duracion\", 1)"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar 201 si se crea una carreras\", function () {\n    pm.response.to.have.status(201);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\" : {{id}},\n  \"nombre\" : \"{{nombre_carrera}}\",\n  \"duracion\"  : {{duracion}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/carreras",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "carreras"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CreateCarreraIDExistente",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\",16)\npm.variables.set(\"nombre_carrera\", \"Diplomatura en IAA\")\npm.variables.set(\"duracion\", 1)"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar 409 si existe una carrera con el mismo id\", function () {\n    pm.response.to.have.status(409);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\" : {{id}},\n  \"nombre\" : \"{{nombre_carrera}}\",\n  \"duracion\"  : {{duracion}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/carreras",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "carreras"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CreateCarreraNombreExistente",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\",17)\npm.variables.set(\"nombre_carrera\", \"Diplomatura en IA\")\npm.variables.set(\"duracion\", 1)"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar 409 si existe una carrera con el mismo nombre\", function () {\n    pm.response.to.have.status(409);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\" : {{id}},\n  \"nombre\" : \"{{nombre_carrera}}\",\n  \"duracion\"  : {{duracion}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/carreras",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "carreras"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateCarrera",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\",16)\npm.variables.set(\"nombre_carrera\", \"Diplomatura en IA Avanzada\")\npm.variables.set(\"duracion\", 1)"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar 200 si se actualiza la carrera\", function () {\n    pm.response.to.have.status(200);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\" : \"{{nombre_carrera}}\",\n  \"duracion\"  : {{duracion}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/carreras/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "carreras",
+                "{{id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateCarreraNombreDuplicado",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\",16)\npm.variables.set(\"nombre_carrera\", \"TUDAI\")\npm.variables.set(\"duracion\", 1)"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar 409 si se intenta actualizar el nombre de una carrera a una existente\", function () {\n    pm.response.to.have.status(409);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\" : \"{{nombre_carrera}}\",\n  \"duracion\"  : {{duracion}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/carreras/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "carreras",
+                "{{id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateCarreraIdDuplicado",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\",16)\npm.variables.set(\"id_obj\",17)\npm.variables.set(\"nombre_carrera\", \"Diplomatura en IA Avanzada\")\npm.variables.set(\"duracion\", 1)"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar 409 si se intenta actualizar el id de la carrera\", function () {\n    pm.response.to.have.status(409);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\" : {{id_obj}},\n  \"nombre\" : \"{{nombre_carrera}}\",\n  \"duracion\"  : {{duracion}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/carreras/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "carreras",
+                "{{id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteCarrera",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\",16)"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar un 204 si se borra una carrera\", function () {\n    pm.response.to.have.status(204);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/carreras/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "carreras",
+                "{{id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteCarreraInexistente",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\",16)"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar un 404 si se intenta borra una carrera que no existe\", function () {\n    pm.response.to.have.status(404);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/carreras/16",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "carreras",
+                "16"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCarrera",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\",1)"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar 200 si existe la carrera\", function () {\n    pm.response.to.have.status(200);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/carreras/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "carreras",
+                "{{id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCarreraInvalida",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\",100)"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar 404 si no existe la carrera\", function () {\n    pm.response.to.have.status(404);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/carreras/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "carreras",
+                "{{id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Test de Endpoints /carreras"
+    },
+    {
+      "name": "TEST_Inscripcion",
+      "item": [
+        {
+          "name": "CreateInscripcion",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"lu\",34978)\npm.variables.set(\"carrera_id\",1)"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe Retornar 200 si se puede inscribir a un estudiante\", function () {\n    pm.response.to.have.status(200);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"estudianteLu\" : {{lu}},\n    \"carreraId\"    : {{carrera_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/inscripciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "inscripciones"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CreateInscripcionInvalida",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"lu\",34978)\npm.variables.set(\"carrera_id\",1)"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe Retornar 409 si no se puede inscribir a un estudiante\", function () {\n    pm.response.to.have.status(409);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"estudianteLu\" : {{lu}},\n    \"carreraId\"    : {{carrera_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/inscripciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "inscripciones"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getInscripcion",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/inscripciones/:inscripcion_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "inscripciones",
+                ":inscripcion_id"
+              ],
+              "variable": [
+                {
+                  "key": "inscripcion_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteInscripcion",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\",109)"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar 204 en caso de que se borre una inscripcion\", function () {\n    pm.response.to.have.status(204);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/inscripciones/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "inscripciones",
+                "{{id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteInscripcion Copy",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\",1000)"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar 404 en caso de que encuentre una inscripcion\", function () {\n    pm.response.to.have.status(404);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/inscripciones/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "inscripciones",
+                "{{id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Test de enpoints /inscripciones"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ]
+}
