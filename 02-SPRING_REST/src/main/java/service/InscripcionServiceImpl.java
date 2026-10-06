@@ -62,4 +62,12 @@ public class InscripcionServiceImpl implements InscripcionService {
         Inscripcion saved = inscripcionRepository.save(entity);
         return inscripcionMapper.toResponse(saved);
     }
+
+    @Override
+    @Transactional
+    public void Delete(Long id){
+        if(!inscripcionRepository.existsById(id))
+            throw new InscripcionNotFoundException(id);
+        inscripcionRepository.deleteById(id);
+    }
 }

@@ -3,9 +3,7 @@ package service;
 import dto.CarreraDTO;
 import dto.CarreraDTOCantidad;
 import dto.ReporteCarreraDTO;
-import exception.BadRequestException;
-import exception.CarreraDuplicadaException;
-import exception.CarreraNotFoundException;
+import exception.*;
 import mapper.CarreraMapper;
 import model.Carrera;
 import org.springframework.stereotype.Service;
@@ -34,17 +32,21 @@ public class CarreraServiceImpl implements CarreraService {
             throw new BadRequestException("El nombre de la carrera es obligatorio");
         }
         if (carreraRepository.existsByNombre(in.nombre())) {
-            throw new CarreraDuplicadaException("Ya existe una carrera con el nombre: " + in.nombre());
+            throw new CarreraNombreDuplicadoException("Ya existe una carrera con el nombre: " + in.nombre());
         }
-
+        if(carreraRepository.findById(in.id()).isPresent())
+            throw new CarreraIdDuplicadoException("Ya existe una carrera con el id: " + in.id());
         Carrera entity = carreraMapper.toEntity(in);
         Carrera saved = carreraRepository.save(entity);
         return carreraMapper.toResponse(saved);
     }
 
+
     @Override
     @Transactional
     public CarreraDTO.Response actualizar(Long id, CarreraDTO.Create in) {
+        if( in.id() != null && !in.id().equals(id))
+            throw new CarreraIdException();
         Carrera existente = carreraRepository.findById(id)
                 .orElseThrow(() -> new CarreraNotFoundException(id));
 
@@ -54,7 +56,7 @@ public class CarreraServiceImpl implements CarreraService {
 
         if (!in.nombre().equalsIgnoreCase(existente.getNombre())
                 && carreraRepository.existsByNombre(in.nombre())) {
-            throw new CarreraDuplicadaException("Ya existe una carrera con el nombre: " + in.nombre());
+            throw new CarreraNombreDuplicadoException("Ya existe una carrera con el nombre: " + in.nombre());
         }
 
         carreraMapper.applyUpdate(existente, in);

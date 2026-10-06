@@ -26,4 +26,10 @@ public class InscripcionController {
         InscripcionDTO.Response body = inscripcionService.inscribirEstudianteEnCarrera(in);
         return ResponseEntity.ok(body);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> Delete(@PathVariable Long id){
+        inscripcionService.Delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
