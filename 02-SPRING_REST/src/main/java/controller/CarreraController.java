@@ -4,6 +4,7 @@ import dto.CarreraDTO;
 import dto.CarreraDTOCantidad;
 import dto.ReporteCarreraDTO;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,13 @@ public class CarreraController {
 
     public CarreraController(CarreraService carreraService){
         this.carreraService = carreraService;
+    }
+
+
+    //buscar carrera
+    @GetMapping("/{id}")
+    public ResponseEntity<CarreraDTO.Response> getCarreraByID(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(carreraService.getCarreraByID(id));
     }
 
     //Alta carrera

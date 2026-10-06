@@ -64,6 +64,14 @@ public class CarreraServiceImpl implements CarreraService {
 
     @Override
     @Transactional
+    public CarreraDTO.Response getCarreraByID(Long id){
+        Carrera c = carreraRepository.findById(id).orElseThrow(() -> new CarreraNotFoundException(id));
+        return carreraMapper.toResponse(c);
+    }
+
+
+    @Override
+    @Transactional
     public void eliminar(Long id) {
         if (!carreraRepository.existsById(id)) {
             throw new CarreraNotFoundException(id);
