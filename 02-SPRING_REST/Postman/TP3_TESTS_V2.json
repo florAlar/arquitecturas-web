@@ -500,7 +500,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"lu\": {{lu}},\n    \"nombres\": \"{{nombres}}\",\n    \"apellido\": \"{{apellidos}}\",\n    \"edad\": {{edad}},\n    \"genero\": \"{{genero}}\",\n    \"dni\": {{dni}},\n    \"ciudad\": \"{{ciudad}}\"\n}",
+              "raw": "{\n    \"lu\": {{lu}},\n    \"nombres\": \"{{nombres}}\",\n    \"apellido\": \"{{apellido}}\",\n    \"edad\": {{edad}},\n    \"genero\": \"{{genero}}\",\n    \"dni\": {{dni}},\n    \"ciudad\": \"{{ciudad}}\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -546,7 +546,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"nombres\": \"{{nombres}}\",\n    \"apellido\": \"{{apellidos}}\",\n    \"edad\": {{edad}},\n    \"genero\": \"{{genero}}\",\n    \"dni\": {{dni}},\n    \"ciudad\": \"{{ciudad}}\"\n}",
+              "raw": "{\n    \"nombres\": \"{{nombres}}\",\n    \"apellido\": \"{{apellido}}\",\n    \"edad\": {{edad}},\n    \"genero\": \"{{genero}}\",\n    \"dni\": {{dni}},\n    \"ciudad\": \"{{ciudad}}\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -583,7 +583,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"lu\": {{lu}},\n    \"nombres\": \"{{nombres}}\",\n    \"apellido\": \"{{apellidos}}\",\n    \"edad\": {{edad}},\n    \"genero\": \"{{genero}}\",\n    \"dni\": {{dni}},\n    \"ciudad\": \"{{ciudad}}\"\n}",
+              "raw": "{\n    \"lu\": {{lu}},\n    \"nombres\": \"{{nombres}}\",\n    \"apellido\": \"{{apellido}}\",\n    \"edad\": {{edad}},\n    \"genero\": \"{{genero}}\",\n    \"dni\": {{dni}},\n    \"ciudad\": \"{{ciudad}}\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1361,23 +1361,75 @@
         },
         {
           "name": "getInscripcion",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\",109)"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar un estado 200 en caso de que encuentre una inscripcion\", function () {\n    pm.response.to.have.status(200);\n});"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/inscripciones/:inscripcion_id",
+              "raw": "{{baseUrl}}/inscripciones/{{id}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "inscripciones",
-                ":inscripcion_id"
+                "{{id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getInscripcionInvalida",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"id\",999999)"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar un estado 404 en caso de que no se encuentre una inscripcion\", function () {\n    pm.response.to.have.status(404);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/inscripciones/{{id}}",
+              "host": [
+                "{{baseUrl}}"
               ],
-              "variable": [
-                {
-                  "key": "inscripcion_id",
-                  "value": ""
-                }
+              "path": [
+                "inscripciones",
+                "{{id}}"
               ]
             }
           },
@@ -1422,7 +1474,7 @@
           "response": []
         },
         {
-          "name": "DeleteInscripcion Copy",
+          "name": "DeleteInscripcionInvalida",
           "event": [
             {
               "listen": "prerequest",
@@ -1438,7 +1490,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Debe retornar 404 en caso de que encuentre una inscripcion\", function () {\n    pm.response.to.have.status(404);\n});"
+                  "pm.test(\"Debe retornar 404 en caso de que no se encuentre una inscripcion\", function () {\n    pm.response.to.have.status(404);\n});"
                 ]
               }
             }
