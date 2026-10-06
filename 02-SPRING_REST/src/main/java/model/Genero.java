@@ -9,7 +9,8 @@ public enum Genero {
     POLIGENERICO,
     AGENERO,
     GENERO_FLUIDO,
-    BIGENERO;
+    BIGENERO,
+    TRANSGENERO;
 
     @JsonCreator
     public static Genero fromString(String value) {

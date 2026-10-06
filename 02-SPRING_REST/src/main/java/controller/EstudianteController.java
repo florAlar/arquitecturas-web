@@ -1,6 +1,7 @@
 package controller;
 
 import dto.EstudianteDTO;
+import exception.EstudianteGeneroException;
 import model.Genero;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,10 +49,14 @@ public class EstudianteController {
     // (literal /genero antes de /{lu} para no capturar "genero" como LU)
     @GetMapping("/genero/{genero}")
     public ResponseEntity<List<EstudianteDTO.Response>> getByGenero(@PathVariable String genero) {
-        Genero g = Genero.valueOf(genero.toUpperCase());
+        Genero g;
+        try {
+            g = Genero.valueOf(genero.trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new EstudianteGeneroException(genero);
+        }
         return ResponseEntity.status(HttpStatus.OK).body(estudianteService.listarPorGenero(g));
     }
-
     // g) recuperar los estudiantes de una determinada carrera, filtrado por ciudad de residencia.
     // GET: http://localhost:8080/estudiantes/carrera/1?ciudad=Tandil
     // (literal /carrera antes de /{lu})

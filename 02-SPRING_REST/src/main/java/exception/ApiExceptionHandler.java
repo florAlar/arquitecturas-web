@@ -18,8 +18,8 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(ex.getMessage()));
     }
 
-    @ExceptionHandler(CarreraDuplicadaException.class)
-    public ResponseEntity<ApiError> handleCarreraDuplicada(CarreraDuplicadaException ex) {
+    @ExceptionHandler(CarreraNombreDuplicadoException.class)
+    public ResponseEntity<ApiError> handleCarreraDuplicada(CarreraNombreDuplicadoException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError(ex.getMessage()));
     }
 
@@ -41,5 +41,20 @@ public class ApiExceptionHandler {
     @ExceptionHandler(InscripcionNotFoundException.class)
     public ResponseEntity<ApiError> handleInscripcionNotFound(InscripcionNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(ex.getMessage()));
+    }
+
+    @ExceptionHandler(EstudianteGeneroException.class)
+    public ResponseEntity<ApiError> handleInscripcionNotFound(EstudianteGeneroException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(ex.getMessage()));
+    }
+
+    @ExceptionHandler(CarreraIdDuplicadoException.class)
+    public ResponseEntity<ApiError> handleInscripcionNotFound(CarreraIdDuplicadoException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError(ex.getMessage()));
+    }
+
+    @ExceptionHandler(CarreraIdException.class)
+    public ResponseEntity<ApiError> handleInscripcionNotFound(CarreraIdException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError(ex.getMessage()));
     }
 }
