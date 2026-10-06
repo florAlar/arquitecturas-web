@@ -9,7 +9,7 @@ import java.util.List;
 public interface CarreraService {
 
     CarreraDTO.Response altaCarrera(CarreraDTO.Create in);
-
+    CarreraDTO.Response getCarreraByID(Long id);
     CarreraDTO.Response actualizar(Long id, CarreraDTO.Create in);
 
     void eliminar(Long id);

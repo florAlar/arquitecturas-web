@@ -47,8 +47,9 @@ public class EstudianteController {
     // GET: http://localhost:8080/estudiantes/genero/MASCULINO
     // (literal /genero antes de /{lu} para no capturar "genero" como LU)
     @GetMapping("/genero/{genero}")
-    public ResponseEntity<List<EstudianteDTO.Response>> getByGenero(@PathVariable Genero genero) {
-        return ResponseEntity.status(HttpStatus.OK).body(estudianteService.listarPorGenero(genero));
+    public ResponseEntity<List<EstudianteDTO.Response>> getByGenero(@PathVariable String genero) {
+        Genero g = Genero.valueOf(genero.toUpperCase());
+        return ResponseEntity.status(HttpStatus.OK).body(estudianteService.listarPorGenero(g));
     }
 
     // g) recuperar los estudiantes de una determinada carrera, filtrado por ciudad de residencia.

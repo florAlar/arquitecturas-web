@@ -1,5 +1,7 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public enum Genero {
     MASCULINO,
     FEMENINO,
@@ -7,5 +9,10 @@ public enum Genero {
     POLIGENERICO,
     AGENERO,
     GENERO_FLUIDO,
-    BIGENERO
+    BIGENERO;
+
+    @JsonCreator
+    public static Genero fromString(String value) {
+        return Genero.valueOf(value.trim().toUpperCase());
+    }
 }

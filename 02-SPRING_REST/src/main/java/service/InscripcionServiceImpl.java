@@ -4,6 +4,7 @@ import dto.InscripcionDTO;
 import exception.CarreraNotFoundException;
 import exception.EstudianteNotFoundException;
 import exception.InscripcionDuplicadaException;
+import exception.InscripcionNotFoundException;
 import mapper.InscripcionMapper;
 import model.Carrera;
 import model.Estudiante;
@@ -32,6 +33,13 @@ public class InscripcionServiceImpl implements InscripcionService {
         this.estudianteRepository = estudianteRepository;
         this.carreraRepository = carreraRepository;
         this.inscripcionMapper = inscripcionMapper;
+    }
+
+    @Override
+    @Transactional
+    public InscripcionDTO.Response getInscripcionByID(Long id){
+        Inscripcion i = inscripcionRepository.findById(id).orElseThrow( () -> new InscripcionNotFoundException(id));
+        return inscripcionMapper.toResponse(i);
     }
 
     @Override

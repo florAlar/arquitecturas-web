@@ -37,4 +37,9 @@ public class ApiExceptionHandler {
     public ResponseEntity<ApiError> handleBadRequest(BadRequestException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiError(ex.getMessage()));
     }
+
+    @ExceptionHandler(InscripcionNotFoundException.class)
+    public ResponseEntity<ApiError> handleInscripcionNotFound(InscripcionNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(ex.getMessage()));
+    }
 }
