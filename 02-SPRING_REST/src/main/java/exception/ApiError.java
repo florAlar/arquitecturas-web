@@ -1,7 +1,21 @@
 package exception;
 
-/**
- * Body simple de error HTTP (sin OpenAPI).
- */
-public record ApiError(String message) {
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.http.HttpStatus;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class ApiError {
+    private HttpStatus Status;
+    private String Message;
+
+    public  ApiError(HttpStatus Status, String Message){
+        this.Status  = Status;
+        this.Message = Message;
+    }
+
 }

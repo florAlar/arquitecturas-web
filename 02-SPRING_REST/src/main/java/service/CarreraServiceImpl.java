@@ -45,8 +45,6 @@ public class CarreraServiceImpl implements CarreraService {
     @Override
     @Transactional
     public CarreraDTO.Response actualizar(Long id, CarreraDTO.Create in) {
-        if( in.id() != null && !in.id().equals(id))
-            throw new CarreraIdException();
         Carrera existente = carreraRepository.findById(id)
                 .orElseThrow(() -> new CarreraNotFoundException(id));
 

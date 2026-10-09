@@ -48,7 +48,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Retorna un status 200 si devuelve un estudiante\", function () {\n  pm.response.to.have.status(200);\n});\n\npm.test(\"Comprobar si el estudiante 'Isidro Blackmuir' tiene un dni '71779527'\", function () {\n    var jsonData = pm.response.json();\n    pm.expect(jsonData.dni).to.eql(71779527);\n});"
+                  "pm.test(\"Retorna un status 200 si devuelve un estudiante\", function () {\n  pm.response.to.have.status(200);\n});\n\npm.test(\"Comprobar si el estudiante 'Isidro Blackmuir' tiene un dni '71779527'\", function () {\n    var jsonData = pm.response.json();\n    pm.expect(jsonData.Dni).to.eql(71779527);\n});"
                 ]
               }
             },
@@ -126,7 +126,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Devuelve un array\", function () {\n    const estudiantes = pm.response.json();\n\n    pm.expect(estudiantes).to.be.an(\"array\");\n});\n\npm.test(\"Todos son de género MASCULINO\", function () {\n    const estudiantes = pm.response.json();\n\n    estudiantes.forEach(estudiante => {\n        pm.expect(estudiante.genero).to.eql(\"MASCULINO\");\n    });\n});"
+                  "pm.test(\"Status 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Devuelve un array\", function () {\n    const estudiantes = pm.response.json();\n\n    pm.expect(estudiantes).to.be.an(\"array\");\n});\n\npm.test(\"Todos son de género MASCULINO\", function () {\n    const estudiantes = pm.response.json();\n\n    estudiantes.forEach(estudiante => {\n        pm.expect(estudiante.Genero).to.eql(\"MASCULINO\");\n    });\n});"
                 ]
               }
             },
@@ -144,14 +144,18 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/estudiantes/genero/{{genero}}",
+              "raw": "{{baseUrl}}/estudiantes?genero={{genero}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "estudiantes",
-                "genero",
-                "{{genero}}"
+                "estudiantes"
+              ],
+              "query": [
+                {
+                  "key": "genero",
+                  "value": "{{genero}}"
+                }
               ]
             },
             "description": "Obtiene todos los estudiantes de acuerdo a su genero\n\nSi hay ocurrencias 200 ok\n\nSi no 400"
@@ -184,14 +188,18 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/estudiantes/genero/{{genero}}",
+              "raw": "{{baseUrl}}/estudiantes?genero={{genero}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "estudiantes",
-                "genero",
-                "{{genero}}"
+                "estudiantes"
+              ],
+              "query": [
+                {
+                  "key": "genero",
+                  "value": "{{genero}}"
+                }
               ]
             },
             "description": "Obtiene todos los estudiantes de acuerdo a su genero\n\nSi hay ocurrencias 200 ok\n\nSi no 400"
@@ -206,7 +214,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Debe retornar 404 si el genero es invalido\", function () {\n    pm.response.to.have.status(404);\n});\n"
+                  "pm.test(\"Debe retornar 400 si el genero es invalido\", function () {\n    pm.response.to.have.status(400);\n});\n"
                 ]
               }
             },
@@ -224,14 +232,18 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/estudiantes/genero/{{genero}}",
+              "raw": "{{baseUrl}}/estudiantes?genero={{genero}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "estudiantes",
-                "genero",
-                "{{genero}}"
+                "estudiantes"
+              ],
+              "query": [
+                {
+                  "key": "genero",
+                  "value": "{{genero}}"
+                }
               ]
             },
             "description": "Obtiene todos los estudiantes de acuerdo a su genero\n\nSi hay ocurrencias 200 ok\n\nSi no 400"
@@ -246,7 +258,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "\n\npm.test(\"Status 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Devuelve un array\", function () { \n    const estudiantes = pm.response.json();\n\n    pm.expect(estudiantes).to.be.an(\"array\");\n});\n\npm.test(\"Todos son de Rauch\", function () {\n    const estudiantes = pm.response.json();\n\n    estudiantes.forEach(estudiante => {\n        pm.expect(estudiante.ciudad).to.eql(\"Rauch\");\n    });\n});\n"
+                  "\n\npm.test(\"Status 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Devuelve un array\", function () { \n    const estudiantes = pm.response.json();\n\n    pm.expect(estudiantes).to.be.an(\"array\");\n});\n\npm.test(\"Todos son de Rauch\", function () {\n    const estudiantes = pm.response.json();\n\n    estudiantes.forEach(estudiante => {\n        pm.expect(estudiante.Ciudad).to.eql(\"Rauch\");\n    });\n});\n"
                 ]
               }
             },
@@ -494,7 +506,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"lu\": {{lu}},\n    \"nombres\": \"{{nombres}}\",\n    \"apellido\": \"{{apellido}}\",\n    \"edad\": {{edad}},\n    \"genero\": \"{{genero}}\",\n    \"dni\": {{dni}},\n    \"ciudad\": \"{{ciudad}}\"\n}",
+              "raw": "{\n    \"Lu\": {{lu}},\n    \"Nombres\": \"{{nombres}}\",\n    \"Apellido\": \"{{apellido}}\",\n    \"Edad\": {{edad}},\n    \"Genero\": \"{{genero}}\",\n    \"Dni\": {{dni}},\n    \"Ciudad\": \"{{ciudad}}\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -540,7 +552,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"nombres\": \"{{nombres}}\",\n    \"apellido\": \"{{apellido}}\",\n    \"edad\": {{edad}},\n    \"genero\": \"{{genero}}\",\n    \"dni\": {{dni}},\n    \"ciudad\": \"{{ciudad}}\"\n}",
+              "raw": "{\n    \"Nombres\": \"{{nombres}}\",\n    \"Apellido\": \"{{apellido}}\",\n    \"Edad\": {{edad}},\n    \"Genero\": \"{{genero}}\",\n    \"Dni\": {{dni}},\n    \"Ciudad\": \"{{ciudad}}\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -570,6 +582,15 @@
                   "pm.test(\"Debe retornar un 409 si se intenta crear un estudiante existente\", function () {\n    pm.response.to.have.status(409);\n});"
                 ]
               }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"lu\", 99999);\npm.variables.set(\"nombres\", \"Max\");\npm.variables.set(\"apellido\", \"Power\");\npm.variables.set(\"edad\", 27);\npm.variables.set(\"genero\", \"Masculino\");\npm.variables.set(\"dni\", 42177228);\npm.variables.set(\"ciudad\", \"Tandil\");"
+                ]
+              }
             }
           ],
           "request": {
@@ -577,7 +598,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"lu\": {{lu}},\n    \"nombres\": \"{{nombres}}\",\n    \"apellido\": \"{{apellido}}\",\n    \"edad\": {{edad}},\n    \"genero\": \"{{genero}}\",\n    \"dni\": {{dni}},\n    \"ciudad\": \"{{ciudad}}\"\n}",
+              "raw": "{\n    \"Lu\": {{lu}},\n    \"Nombres\": \"{{nombres}}\",\n    \"Apellido\": \"{{apellido}}\",\n    \"Edad\": {{edad}},\n    \"Genero\": \"{{genero}}\",\n    \"Dni\": {{dni}},\n    \"Ciudad\": \"{{ciudad}}\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -607,6 +628,15 @@
                   "pm.test(\"Debe retornar 200 si el estudiante se actualiza correctamente\", function () {\n    pm.response.to.have.status(200);\n});"
                 ]
               }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"lu\",99999)\npm.variables.set(\"nombres\", \"Agustin\");\npm.variables.set(\"apellido\", \"Cidoni\");\npm.variables.set(\"edad\", 27);\npm.variables.set(\"genero\", \"Femenino\");\npm.variables.set(\"dni\", 42177228);\npm.variables.set(\"ciudad\", \"Tandil\");"
+                ]
+              }
             }
           ],
           "request": {
@@ -614,7 +644,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"nombres\": \"{{nombres}}\",\n    \"apellido\": \"{{apellido}}\",\n    \"edad\": {{edad}},\n    \"genero\": \"{{genero}}\",\n    \"dni\": {{dni}},\n    \"ciudad\": \"{{ciudad}}\"\n}",
+              "raw": "{\n    \"Nombres\": \"{{nombres}}\",\n    \"Apellido\": \"{{apellido}}\",\n    \"Edad\": {{edad}},\n    \"Genero\": \"{{genero}}\",\n    \"Dni\": {{dni}},\n    \"Ciudad\": \"{{ciudad}}\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -622,19 +652,60 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/estudiantes/:lu",
+              "raw": "{{baseUrl}}/estudiantes/{{lu}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "estudiantes",
-                ":lu"
-              ],
-              "variable": [
-                {
-                  "key": "lu",
-                  "value": "99999"
+                "{{lu}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateEstudianteDNIInvalido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Debe retornar 409 si se intenta modificar el DNI de un estudiante que ya existe\", function () {\n    pm.response.to.have.status(409);\n});"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"lu\",99999)\npm.variables.set(\"nombres\", \"Agustin\");\npm.variables.set(\"apellido\", \"Cidoni\");\npm.variables.set(\"edad\", 27);\npm.variables.set(\"genero\", \"Femenino\");\npm.variables.set(\"dni\", 71779527);\npm.variables.set(\"ciudad\", \"Tandil\");"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"Nombres\": \"{{nombres}}\",\n    \"Apellido\": \"{{apellido}}\",\n    \"Edad\": {{edad}},\n    \"Genero\": \"{{genero}}\",\n    \"Dni\": {{dni}},\n    \"Ciudad\": \"{{ciudad}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
                 }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/estudiantes/{{lu}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estudiantes",
+                "{{lu}}"
               ]
             }
           },
@@ -648,7 +719,16 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Debe retornar 404 si no se encuentra el estudiante\", function () {\n    pm.response.to.have.status(404);\n});"
+                  "pm.test(\"Debe retornar 404 si no se encuentra el LU del estudiante\", function () {\n    pm.response.to.have.status(404);\n});"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.variables.set(\"lu\",999999)\npm.variables.set(\"nombres\", \"Agustin\");\npm.variables.set(\"apellido\", \"Cidoni\");\npm.variables.set(\"edad\", 27);\npm.variables.set(\"genero\", \"Femenino\");\npm.variables.set(\"dni\", 71779527);\npm.variables.set(\"ciudad\", \"Tandil\");"
                 ]
               }
             }
@@ -658,7 +738,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"nombres\": \"{{nombres}}\",\n    \"apellido\": \"{{apellido}}\",\n    \"edad\": {{edad}},\n    \"genero\": \"{{genero}}\",\n    \"dni\": {{dni}},\n    \"ciudad\": \"{{ciudad}}\"\n}",
+              "raw": "{\n    \"Nombres\": \"{{nombres}}\",\n    \"Apellido\": \"{{apellido}}\",\n    \"Edad\": {{edad}},\n    \"Genero\": \"{{genero}}\",\n    \"Dni\": {{dni}},\n    \"Ciudad\": \"{{ciudad}}\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -666,19 +746,13 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/estudiantes/:lu",
+              "raw": "{{baseUrl}}/estudiantes/{{lu}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "estudiantes",
-                ":lu"
-              ],
-              "variable": [
-                {
-                  "key": "lu",
-                  "value": "999999"
-                }
+                "{{lu}}"
               ]
             }
           },
@@ -812,13 +886,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/carreras/con_inscriptos",
+              "raw": "{{baseUrl}}/carreras/inscriptos",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "carreras",
-                "con_inscriptos"
+                "inscriptos"
               ]
             }
           },
@@ -851,7 +925,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"id\" : {{id}},\n  \"nombre\" : \"{{nombre_carrera}}\",\n  \"duracion\"  : {{duracion}}\n}",
+              "raw": "{\n  \"Id\" : {{id}},\n  \"Nombre\" : \"{{nombre_carrera}}\",\n  \"Duracion\"  : {{duracion}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -897,7 +971,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"id\" : {{id}},\n  \"nombre\" : \"{{nombre_carrera}}\",\n  \"duracion\"  : {{duracion}}\n}",
+              "raw": "{\n  \"Id\" : {{id}},\n  \"Nombre\" : \"{{nombre_carrera}}\",\n  \"Duracion\"  : {{duracion}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -943,7 +1017,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"id\" : {{id}},\n  \"nombre\" : \"{{nombre_carrera}}\",\n  \"duracion\"  : {{duracion}}\n}",
+              "raw": "{\n  \"Id\" : {{id}},\n  \"Nombre\" : \"{{nombre_carrera}}\",\n  \"Duracion\"  : {{duracion}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -989,7 +1063,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nombre\" : \"{{nombre_carrera}}\",\n  \"duracion\"  : {{duracion}}\n}",
+              "raw": "{\n  \"Nombre\" : \"{{nombre_carrera}}\",\n  \"Duracion\"  : {{duracion}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1036,54 +1110,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nombre\" : \"{{nombre_carrera}}\",\n  \"duracion\"  : {{duracion}}\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/carreras/{{id}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "carreras",
-                "{{id}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "UpdateCarreraIdError",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.variables.set(\"id\",16)\npm.variables.set(\"id_obj\",17)\npm.variables.set(\"nombre_carrera\", \"Diplomatura en IA Avanzada\")\npm.variables.set(\"duracion\", 1)"
-                ]
-              }
-            },
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Debe retornar 409 si se intenta actualizar el id de la carrera\", function () {\n    pm.response.to.have.status(409);\n});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"id\" : {{id_obj}},\n  \"nombre\" : \"{{nombre_carrera}}\",\n  \"duracion\"  : {{duracion}}\n}",
+              "raw": "{\n  \"Nombre\" : \"{{nombre_carrera}}\",\n  \"Duracion\"  : {{duracion}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1278,7 +1305,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Debe Retornar 200 si se puede inscribir a un estudiante\", function () {\n    pm.response.to.have.status(200);\n});"
+                  "pm.test(\"Debe Retornar 201 si se puede inscribir a un estudiante\", function () {\n    pm.response.to.have.status(201);\n});"
                 ]
               }
             }
@@ -1288,7 +1315,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"estudianteLu\" : {{lu}},\n    \"carreraId\"    : {{carrera_id}}\n}",
+              "raw": "{\n    \"EstudianteLu\" : {{lu}},\n    \"CarreraId\"    : {{carrera_id}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1334,7 +1361,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"estudianteLu\" : {{lu}},\n    \"carreraId\"    : {{carrera_id}}\n}",
+              "raw": "{\n    \"EstudianteLu\" : {{lu}},\n    \"CarreraId\"    : {{carrera_id}}\n}",
               "options": {
                 "raw": {
                   "language": "json"

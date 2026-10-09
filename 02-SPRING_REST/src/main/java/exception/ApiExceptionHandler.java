@@ -8,53 +8,34 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-    @ExceptionHandler(EstudianteNotFoundException.class)
-    public ResponseEntity<ApiError> handleEstudianteNotFound(EstudianteNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(ex.getMessage()));
+    @ExceptionHandler({
+            EstudianteNotFoundException.class,
+            CarreraNotFoundException.class,
+            InscripcionNotFoundException.class
+    })
+    public ResponseEntity<ApiError> handleNotFound(RuntimeException ex) {
+        return build(HttpStatus.NOT_FOUND, ex);
     }
 
-    @ExceptionHandler(CarreraNotFoundException.class)
-    public ResponseEntity<ApiError> handleCarreraNotFound(CarreraNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(ex.getMessage()));
+    @ExceptionHandler({
+            EstudianteDuplicadoException.class,
+            CarreraNombreDuplicadoException.class,
+            CarreraIdDuplicadoException.class,
+            InscripcionDuplicadaException.class
+    })
+    public ResponseEntity<ApiError> handleConflict(RuntimeException ex) {
+        return build(HttpStatus.CONFLICT, ex);
     }
 
-    @ExceptionHandler(CarreraNombreDuplicadoException.class)
-    public ResponseEntity<ApiError> handleCarreraDuplicada(CarreraNombreDuplicadoException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError(ex.getMessage()));
+    @ExceptionHandler({
+            BadRequestException.class,
+            EstudianteGeneroException.class
+    })
+    public ResponseEntity<ApiError> handleBadRequest(RuntimeException ex) {
+        return build(HttpStatus.BAD_REQUEST, ex);
     }
 
-    @ExceptionHandler(InscripcionDuplicadaException.class)
-    public ResponseEntity<ApiError> handleInscripcionDuplicada(InscripcionDuplicadaException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError(ex.getMessage()));
-    }
-
-    @ExceptionHandler(EstudianteDuplicadoException.class)
-    public ResponseEntity<ApiError> handleEstudianteDuplicado(EstudianteDuplicadoException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError(ex.getMessage()));
-    }
-
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ApiError> handleBadRequest(BadRequestException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiError(ex.getMessage()));
-    }
-
-    @ExceptionHandler(InscripcionNotFoundException.class)
-    public ResponseEntity<ApiError> handleInscripcionNotFound(InscripcionNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(ex.getMessage()));
-    }
-
-    @ExceptionHandler(EstudianteGeneroException.class)
-    public ResponseEntity<ApiError> handleInscripcionNotFound(EstudianteGeneroException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(ex.getMessage()));
-    }
-
-    @ExceptionHandler(CarreraIdDuplicadoException.class)
-    public ResponseEntity<ApiError> handleInscripcionNotFound(CarreraIdDuplicadoException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError(ex.getMessage()));
-    }
-
-    @ExceptionHandler(CarreraIdException.class)
-    public ResponseEntity<ApiError> handleInscripcionNotFound(CarreraIdException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError(ex.getMessage()));
+    private ResponseEntity<ApiError> build(HttpStatus status, RuntimeException ex) {
+        return ResponseEntity.status(status).body(new ApiError(status, ex.getMessage()));
     }
 }
