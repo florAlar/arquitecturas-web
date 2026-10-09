@@ -71,6 +71,8 @@ public class EstudianteServiceImpl implements EstudianteService {
                     "sortBy inválido: '" + campo + "'. Permitidos: " + SORT_WHITELIST
             );
         }
+
+
         // Configuramos la dirección por defecto a ASC si no se envía de forma correcta
         Sort.Direction dir = "desc".equalsIgnoreCase(direction)
                 ? Sort.Direction.DESC
@@ -122,6 +124,7 @@ public class EstudianteServiceImpl implements EstudianteService {
     public EstudianteDTO.Response actualizar(Long lu, EstudianteDTO.Create in) {
         Estudiante existente = estudianteRepository.findById(lu)
                 .orElseThrow(() -> new EstudianteNotFoundException(lu));
+
 
         if (in.dni() != null
                 && !in.dni().equals(existente.getDni())

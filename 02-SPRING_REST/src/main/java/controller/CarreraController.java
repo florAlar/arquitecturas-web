@@ -56,8 +56,8 @@ public class CarreraController {
 
 
     // f) Obtener las carreras con estudiantes inscriptos y ordenadas por cantidad de inscriptos
-    // GET: http://localhost:8080/carreras/con_inscriptos
-    @GetMapping("/con_inscriptos")
+    // GET: http://localhost:8080/carreras/inscriptos
+    @GetMapping("/inscriptos")
     public ResponseEntity<List<CarreraDTOCantidad>> getCarrerasConInscriptosOrdenadas() {
         return ResponseEntity.status(HttpStatus.OK).body(carreraService.getCarrerasConInscriptosOrdenadas());
     }

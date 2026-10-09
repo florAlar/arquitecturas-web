@@ -23,8 +23,7 @@ public class InscripcionController {
 
     @PostMapping("")
     public ResponseEntity<InscripcionDTO.Response> inscribir(@RequestBody InscripcionDTO.Create in) {
-        InscripcionDTO.Response body = inscripcionService.inscribirEstudianteEnCarrera(in);
-        return ResponseEntity.ok(body);
+        return ResponseEntity.status(HttpStatus.CREATED).body(inscripcionService.inscribirEstudianteEnCarrera(in));
     }
 
     @DeleteMapping("/{id}")
