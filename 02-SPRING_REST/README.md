@@ -331,19 +331,19 @@ Al arrancar, MYSQL en memoria se crea con `ddl-auto=create-drop` y `DataLoader` 
 ## TESTS API REST
 Los tests fueron realizados y guardados en una coleccion de Postman.
 Cada request esta parametrizado con valores pre-request precargados
-[Coleccion Potman JSON](Postman/TP3_TESTS.json)
+[Coleccion Potman JSON](.Postman/TP3_TESTS.json)
 
 #### Importar coleccion
 **File → Import → Seleccionamos el archivo JSON**
-![import](/Postman/res/import.png)
+![import](./Postman/res/import.png)
 
 #### Ejecutar coleccion 
 **Seleccionamos la coleccion → Seleccionamos Run desde la parte superior derecha**
 Se mostrará las consultas a relizar de la coleccion.
-![import](/Postman/res/runner.png)
+![import](./Postman/res/runner.png)
 
 Una vez que se ejecuta la coleccion Postman realizara cada test individualmente
-![running](/Postman/res/running.png)
+![running](./Postman/res/running.png)
 
 
 ## Recursos
