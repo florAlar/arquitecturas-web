@@ -99,6 +99,7 @@ classDiagram
         AGENERO
         GENERO_FLUIDO
         BIGENERO
+        TRANSGENERO
     }
 
     Estudiante "1" --> "*" Inscripcion : inscripto
@@ -216,7 +217,7 @@ El proyecto usa **Controller → Service → Repository** con **DTO + Mapper** h
 
 ### Controller / Service / Repository
 
-Los controllers reciben HTTP y delegan en interfaces de servicio. Las implementaciones (`*ServiceImpl`) validan reglas de negocio y usan `JpaRepository` + consultas JPQL/native. No se expone la entidad JPA en el body de la API.
+Los controllers reciben HTTP y delegan en interfaces de servicio. Las implementaciones (`*ServiceImpl`) validan reglas de negocio y usan `JpaRepository` + consultas JPQL. No se expone la entidad JPA en el body de la API.
 
 ### DTO y Mapper
 
@@ -239,12 +240,12 @@ Base local: `http://localhost:8080`
 | Consigna | Método | Ruta | Notas |
 |----------|--------|------|--------|
 | a | `POST` | `/estudiantes` | body `EstudianteDTO.Create` → `201` + `Response` |
-| b | `POST` | `/inscripciones/inscribir` | body `{ "estudianteLu", "carreraId" }` → `200` + `InscripcionDTO.Response` |
+| b | `POST` | `/inscripciones` | body `{ "estudianteLu", "carreraId" }` → `200` + `InscripcionDTO.Response` |
 | c | `GET` | `/estudiantes` | query `sortBy` (default `lu`), `direction` (`asc`/`desc`) |
 | d | `GET` | `/estudiantes/{lu}` | `Detail` con inscripciones |
-| e | `GET` | `/estudiantes/genero/{genero}` | enum `Genero` (ej. `MASCULINO`) |
-| f | `GET` | `/carreras/con_inscriptos` | `CarreraDTOCantidad`, orden por cantidad DESC |
-| g | `GET` | `/estudiantes/carrera/{idCarrera}?ciudad=` | ciudad obligatoria; 404 si no existe la carrera |
+| e | `GET` | `/estudiantes?genero={genero}` | enum `Genero` (ej. `MASCULINO`) |
+| f | `GET` | `/carreras/inscriptos` | `CarreraDTOCantidad`, orden por cantidad DESC |
+| g | `GET` | `/estudiantes/carrera/{idCarrera}?ciudad={ciudad}` | ciudad obligatoria; 404 si no existe la carrera |
 | h | `GET` | `/carreras/reporte` | `ReporteCarreraDTO`: nombre, año, inscriptos, egresados |
 
 Ejemplos:
@@ -253,10 +254,10 @@ Ejemplos:
 POST http://localhost:8080/estudiantes
 GET  http://localhost:8080/estudiantes?sortBy=apellido&direction=desc
 GET  http://localhost:8080/estudiantes/1000
-GET  http://localhost:8080/estudiantes/genero/FEMENINO
+GET  http://localhost:8080/estudiantes?genero=Femenino
 GET  http://localhost:8080/estudiantes/carrera/1?ciudad=Tandil
 POST http://localhost:8080/inscripciones/inscribir
-GET  http://localhost:8080/carreras/con_inscriptos
+GET  http://localhost:8080/carreras/inscriptos
 GET  http://localhost:8080/carreras/reporte
 ```
 
@@ -264,6 +265,43 @@ También hay alta/actualización/baja de carrera (`POST/PUT/DELETE /carreras`) f
 
 ## Cómo correr
 
+### Docker Compose (MySQL)
+
+Requisito: Docker Desktop (o engine + plugin Compose).
+
+Desde la carpeta del módulo (`02-SPRING-REST`):
+
+```bash
+docker compose up -d
+```
+
+Queda un MySQL en `localhost:3306`:
+
+| Parámetro | Valor |
+|-----------|--------|
+| contenedor | `mysql-TP3_DB` |
+| imagen | `mysql` |
+| base | `TP3` |
+| user | `root` |
+| password | vacía (`MYSQL_ALLOW_EMPTY_PASSWORD`) |
+| puerto | `3306:3306` |
+| volumen | `mysql_data` |
+
+
+Comandos útiles:
+
+```bash
+docker compose ps
+docker compose down          # frena y borra el contenedor (conserva el volumen)
+docker compose down -v       # además borra mysql_data
+```
+
+
+
+
+
+
+### Maven
 Requisitos: **JDK 17+** y **Maven 3.9+**.
 
 Desde la carpeta del módulo (`02-SPRING_REST`):
@@ -280,19 +318,38 @@ mvn -DskipTests spring-boot:run
 
 IntelliJ: importar el `pom.xml` y Run `Application`.
 
-Al arrancar, H2 en memoria se crea con `ddl-auto=create-drop` y `DataLoader` carga los CSV. Consola H2 habilitada en la config del módulo.
+Al arrancar, MYSQL en memoria se crea con `ddl-auto=create-drop` y `DataLoader` carga los CSV. Consola MYSQL habilitada en la config del módulo.
 
 | Parámetro | Valor |
 |-----------|--------|
-| motor | H2 embebida |
-| URL JDBC | `jdbc:h2:mem:integrador3` |
-| user | `sa` |
+| motor | MYSQL |
+| URL JDBC | `jdbc:mysql://localhost:3306/TP3?createDatabaseIfNotExist=true` |
+| user | `root` |
 | password | vacía |
 | puerto HTTP | `8080` (default Spring) |
+
+## TESTS API REST
+Los tests fueron realizados y guardados en una coleccion de Postman.
+Cada request esta parametrizado con valores pre-request precargados
+[Coleccion Potman JSON](Postman/TP3_TESTS.json)
+
+#### Importar coleccion
+**File → Import → Seleccionamos el archivo JSON**
+![import](/Postman/res/import.png)
+
+#### Ejecutar coleccion 
+**Seleccionamos la coleccion → Seleccionamos Run desde la parte superior derecha**
+Se mostrará las consultas a relizar de la coleccion.
+![import](/Postman/res/runner.png)
+
+Una vez que se ejecuta la coleccion Postman realizara cada test individualmente
+![running](/Postman/res/running.png)
+
 
 ## Recursos
 
 - `src/main/resources/CSV/` — `estudiantes.csv`, `carreras.csv`, `estudianteCarrera.csv`
-- `src/main/resources/application.properties` — datasource H2 y JPA
+- `src/main/resources/application.properties` — datasource MYSQL y JPA
 - `src/main/resources/consigna.md` — extracto de consignas REST
-- `pom.xml` — Spring Boot 4.1.x, Data JPA, Web, H2, Commons CSV
+- `pom.xml` — Spring Boot 4.1.x, Data JPA, Web, MYSQL-Connector, Lombok, Commons CSV
+
