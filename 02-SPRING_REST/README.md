@@ -256,7 +256,7 @@ GET  http://localhost:8080/estudiantes?sortBy=apellido&direction=desc
 GET  http://localhost:8080/estudiantes/1000
 GET  http://localhost:8080/estudiantes?genero=Femenino
 GET  http://localhost:8080/estudiantes/carrera/1?ciudad=Tandil
-POST http://localhost:8080/inscripciones/inscribir
+POST http://localhost:8080/inscripciones
 GET  http://localhost:8080/carreras/inscriptos
 GET  http://localhost:8080/carreras/reporte
 ```
@@ -331,7 +331,7 @@ Al arrancar, MYSQL en memoria se crea con `ddl-auto=create-drop` y `DataLoader` 
 ## TESTS API REST
 Los tests fueron realizados y guardados en una coleccion de Postman.
 Cada request esta parametrizado con valores pre-request precargados
-[Coleccion Potman JSON](.Postman/TP3_TESTS.json)
+[Coleccion Potman JSON](Postman/TP3_TESTS.json)
 
 #### Importar coleccion
 **File → Import → Seleccionamos el archivo JSON**
